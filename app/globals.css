@@ -119,10 +119,10 @@ main {
 }
 .hero-doodle {
   position: absolute;
-  top: -0.5rem;
+  top: -1.25rem;
   right: 0.5rem;
-  width: 150px;
-  height: 110px;
+  width: 240px;
+  height: 175px;
   transform: rotate(4deg);
 }
 @media (max-width: 600px) {
