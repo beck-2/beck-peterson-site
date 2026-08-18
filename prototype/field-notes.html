@@ -133,6 +133,14 @@
   .trip-tab.active { background: var(--paper); color: var(--ink); border-color: var(--accent); font-weight: 700; }
 
   /* Travel */
+  .trip-blurb {
+    max-width: 42ch;
+    margin: 0 0 2.5rem;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
   .travel-snake { position: relative; }
   svg.route { position: absolute; left: 0; top: 0; overflow: visible; }
   #routePath { transition: stroke 0.2s ease; }
@@ -169,6 +177,7 @@
     position: relative;
     outline: 3px solid transparent;
     outline-offset: 3px;
+    transform-origin: bottom center;
     transition: transform 0.25s ease, outline-color 0.25s ease;
   }
   :root[data-theme="dark"] .polaroid, :root:not([data-theme="light"]) .polaroid { background: #d8d3c4; }
@@ -292,6 +301,7 @@
         <button type="button" class="trip-tab" data-trip="film" role="tab" aria-selected="false">Film</button>
       </div>
     </div>
+    <p class="trip-blurb" id="tripBlurb"></p>
     <div class="travel-snake" id="travelSnake">
       <div class="plane-track" id="planeTrack">
         <svg class="plane-icon" id="planeIcon" width="28" height="28" viewBox="-14 -14 28 28">
@@ -377,12 +387,13 @@
     }
 
     var TRIPS = {
-      solo: { label: 'Solo', year: 2026, stops: makeStops('Solo', 5) },
-      volcano: { label: 'Volcano', year: 2026, stops: makeStops('Volcano', 2) },
-      study: { label: 'Study', year: 2025, stops: makeStops('Study', 4) },
-      film: { label: 'Film', year: 2011, stops: makeStops('Film', 3) }
+      solo: { label: 'Solo', year: 2026, blurb: "[Beck's few-line intro to the solo trip goes here.]", stops: makeStops('Solo', 5) },
+      volcano: { label: 'Volcano', year: 2026, blurb: "[Beck's few-line intro to the volcano trip goes here.]", stops: makeStops('Volcano', 2) },
+      study: { label: 'Study', year: 2025, blurb: "[Beck's few-line intro to the study trip goes here.]", stops: makeStops('Study', 4) },
+      film: { label: 'Film', year: 2011, blurb: "[Beck's few-line intro to the film trip goes here.]", stops: makeStops('Film', 3) }
     };
     var tripYearEl = document.getElementById('tripYear');
+    var tripBlurbEl = document.getElementById('tripBlurb');
 
     function buildStopEl(data) {
       var el = document.createElement('div');
@@ -412,6 +423,7 @@
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
       tripYearEl.textContent = trip.year;
+      tripBlurbEl.textContent = trip.blurb;
       layout();
     }
 
@@ -444,11 +456,11 @@
       var rightX = W * 0.82;
       var topPad = 30;
 
-      // Path anchors: a start point above the first stop, then one per stop,
-      // alternating left/right so the line snakes back and forth.
-      anchors = [{ x: W / 2, y: 0 }];
-      stops.forEach(function (stop, i) {
-        anchors.push({ x: i % 2 === 0 ? leftX : rightX, y: topPad + i * segH });
+      // Path anchors: one per stop, alternating left/right so the line
+      // snakes back and forth. No lead-in point before the first stop —
+      // that segment read as too flat/horizontal to track smoothly.
+      anchors = stops.map(function (stop, i) {
+        return { x: i % 2 === 0 ? leftX : rightX, y: topPad + i * segH };
       });
       var lastY = anchors[anchors.length - 1].y;
       var totalH = lastY + 360; // room for the last hanging pin + polaroid + caption
@@ -468,7 +480,7 @@
         samples.push({ l: l, pt: path.getPointAtLength(l) });
       }
       stopLens = stops.map(function (stop, i) {
-        var target = anchors[i + 1];
+        var target = anchors[i];
         var best = samples[0];
         samples.forEach(function (sm) {
           var d2 = (sm.pt.x - target.x) * (sm.pt.x - target.x) + (sm.pt.y - target.y) * (sm.pt.y - target.y);
@@ -479,7 +491,7 @@
       });
 
       stops.forEach(function (stop, i) {
-        var a = anchors[i + 1];
+        var a = anchors[i];
         stop.style.left = a.x + 'px';
         stop.style.top = a.y + 'px';
       });
