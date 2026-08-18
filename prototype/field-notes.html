@@ -9,7 +9,6 @@
     --brass: #B4863A;
     --line: rgba(43,38,32,0.2);
     --card: #F8F3E5;
-    --shadow: rgba(43,38,32,0.28);
   }
   :root[data-theme="dark"] {
     --paper: #221C14;
@@ -20,7 +19,6 @@
     --brass: #D9A94B;
     --line: rgba(237,227,204,0.22);
     --card: #2B2419;
-    --shadow: rgba(0,0,0,0.5);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -32,7 +30,6 @@
       --brass: #D9A94B;
       --line: rgba(237,227,204,0.22);
       --card: #2B2419;
-      --shadow: rgba(0,0,0,0.5);
     }
   }
 
@@ -161,17 +158,18 @@
   .pin {
     width: 16px; height: 16px; border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #e6b95c, var(--brass) 65%);
-    box-shadow: 0 3px 4px var(--shadow);
     flex: none;
   }
   .thread { width: 1px; height: 14px; background: var(--ink-soft); opacity: 0.5; flex: none; }
   .polaroid {
     background: #fff;
+    border: 1px solid var(--line);
     padding: 10px 10px 34px;
-    box-shadow: 0 8px 16px -6px var(--shadow);
     width: 168px; flex: none;
     position: relative;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    outline: 3px solid transparent;
+    outline-offset: 3px;
+    transition: transform 0.25s ease, outline-color 0.25s ease;
   }
   :root[data-theme="dark"] .polaroid, :root:not([data-theme="light"]) .polaroid { background: #d8d3c4; }
   .polaroid .frame {
@@ -187,9 +185,7 @@
   .stop:nth-child(even) .polaroid { transform: rotate(2.5deg); }
   .stop.active:nth-child(odd) .polaroid { transform: rotate(-3deg) scale(1.1); }
   .stop.active:nth-child(even) .polaroid { transform: rotate(2.5deg) scale(1.1); }
-  .stop.active .polaroid {
-    box-shadow: 0 0 0 3px var(--accent), 0 10px 20px -6px var(--shadow);
-  }
+  .stop.active .polaroid { outline-color: var(--accent); }
   .stop .text { padding-top: 0.6rem; text-align: center; }
   .stop .place {
     font-family: "Courier New", ui-monospace, monospace; font-size: 0.75rem; color: var(--ink-soft);
@@ -210,7 +206,6 @@
     padding: 0.9rem 1.1rem;
     font-size: 0.9rem;
     max-width: 220px;
-    box-shadow: 2px 3px 0 var(--line);
   }
   .fact:nth-child(1) { transform: rotate(-2deg); }
   .fact:nth-child(2) { transform: rotate(1.5deg); margin-top: 1.2rem; }
@@ -289,7 +284,7 @@
   <section class="block" id="travel">
     <div class="section-head">
       <h2 class="stamp">Travel</h2>
-      <span class="mono-label">chronological</span>
+      <span class="mono-label" id="tripYear"></span>
       <div class="trip-tabs" id="tripTabs" role="tablist" aria-label="Trips">
         <button type="button" class="trip-tab active" data-trip="solo" role="tab" aria-selected="true">Solo</button>
         <button type="button" class="trip-tab" data-trip="volcano" role="tab" aria-selected="false">Volcano</button>
@@ -382,11 +377,12 @@
     }
 
     var TRIPS = {
-      solo: { label: 'Solo', stops: makeStops('Solo', 5) },
-      volcano: { label: 'Volcano', stops: makeStops('Volcano', 2) },
-      study: { label: 'Study', stops: makeStops('Study', 4) },
-      film: { label: 'Film', stops: makeStops('Film', 3) }
+      solo: { label: 'Solo', year: 2026, stops: makeStops('Solo', 5) },
+      volcano: { label: 'Volcano', year: 2026, stops: makeStops('Volcano', 2) },
+      study: { label: 'Study', year: 2025, stops: makeStops('Study', 4) },
+      film: { label: 'Film', year: 2011, stops: makeStops('Film', 3) }
     };
+    var tripYearEl = document.getElementById('tripYear');
 
     function buildStopEl(data) {
       var el = document.createElement('div');
@@ -415,6 +411,7 @@
         btn.classList.toggle('active', isActive);
         btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
       });
+      tripYearEl.textContent = trip.year;
       layout();
     }
 
