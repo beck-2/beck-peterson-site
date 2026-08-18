@@ -1,0 +1,335 @@
+/* ABOUTME: Global design tokens and base styles for the site.
+   ABOUTME: Ported from the Field Notes prototype (prototype/field-notes.html) so the real app matches it. */
+
+:root {
+  --paper: #f3eedf;
+  --paper-alt: #eae2cc;
+  --ink: #2b2620;
+  --ink-soft: #5a5240;
+  --accent: #d98a9b;
+  --brass: #b4863a;
+  --line: rgba(43, 38, 32, 0.2);
+  --card: #f8f3e5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #221c14;
+    --paper-alt: #2b2419;
+    --ink: #ede3cc;
+    --ink-soft: #b9ad8e;
+    --accent: #e9a9b8;
+    --brass: #d9a94b;
+    --line: rgba(237, 227, 204, 0.22);
+    --card: #2b2419;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  background-image: repeating-linear-gradient(transparent, transparent 27px, var(--line) 28px),
+    radial-gradient(ellipse at top left, rgba(0, 0, 0, 0.03), transparent 60%);
+  color: var(--ink);
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent);
+}
+
+.stamp {
+  font-family: Superclarendon, "Bookman Old Style", "URW Bookman", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.mono-label {
+  font-family: "Courier New", ui-monospace, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+
+header.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+header.site-header .name {
+  font-size: 1.1rem;
+}
+nav {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+nav a {
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+nav a:hover,
+nav a:focus-visible {
+  color: var(--accent);
+}
+nav a.current {
+  color: var(--ink);
+  border-bottom: 2px solid var(--brass);
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 6rem;
+}
+
+.hero {
+  text-align: left;
+  margin-bottom: 4rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  margin: 0 0 0.35rem;
+  text-wrap: balance;
+  transform: rotate(-0.6deg);
+}
+.hero .tagline {
+  font-size: 1.25rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+details.dropdown {
+  border-top: 1px dashed var(--line);
+  padding-top: 1rem;
+}
+details.dropdown summary {
+  cursor: pointer;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  list-style: none;
+}
+details.dropdown summary::-webkit-details-marker {
+  display: none;
+}
+details.dropdown summary::before {
+  content: "+ ";
+}
+details.dropdown[open] summary::before {
+  content: "\2013 ";
+}
+details.dropdown p {
+  max-width: 60ch;
+  margin: 0.9rem 0 0;
+  font-size: 1.02rem;
+}
+
+section.block {
+  margin-bottom: 4.5rem;
+}
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+.section-head h2 {
+  font-size: 1.6rem;
+  margin: 0;
+  transform: rotate(-0.4deg);
+}
+
+.quiet-note {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.jumble {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.fact {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 0.9rem 1.1rem;
+  font-size: 0.9rem;
+  max-width: 220px;
+}
+.fact:nth-child(1) {
+  transform: rotate(-2deg);
+}
+.fact:nth-child(2) {
+  transform: rotate(1.5deg);
+  margin-top: 1.2rem;
+}
+.fact:nth-child(3) {
+  transform: rotate(-1deg);
+}
+.fact:nth-child(4) {
+  transform: rotate(2.2deg);
+  margin-top: 0.6rem;
+}
+.fact:nth-child(5) {
+  transform: rotate(-2.6deg);
+}
+
+/* Frog chart */
+.frog-chart {
+  margin-top: 1.75rem;
+  max-width: 480px;
+}
+.frog-chart-eyebrow {
+  margin: 0 0 1rem;
+}
+.frog-track {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 130px;
+  border-bottom: 1px solid var(--line);
+}
+.frog-bar-col {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.frog-bar {
+  width: 100%;
+  min-height: 2px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-bottom: none;
+  transition: height 0.2s ease;
+}
+.frog-bar-own {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.frog-marker {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.frog-marker-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e6b95c, var(--brass) 65%);
+}
+.frog-marker-label {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brass);
+}
+.frog-labels {
+  display: flex;
+  gap: 5px;
+  margin-top: 0.4rem;
+}
+.frog-labels span {
+  flex: 1;
+  text-align: center;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.62rem;
+  color: var(--ink-soft);
+}
+.frog-total {
+  margin: 0.9rem 0 0;
+}
+.frog-form {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.frog-form input {
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  width: 7rem;
+}
+.frog-form button {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.frog-form button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.frog-error {
+  color: var(--accent);
+  font-size: 0.85rem;
+  margin-top: 0.6rem;
+}
+
+footer.site-footer {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+  border-top: 1px dashed var(--line);
+  padding-top: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.contact-box {
+  border: 1px solid var(--line);
+  padding: 0.75rem 1rem;
+  background: var(--card);
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  max-width: 280px;
+}
+.links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.links a {
+  font-size: 0.85rem;
+}

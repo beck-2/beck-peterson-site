@@ -43,7 +43,7 @@ A loose, jumbled collection of fun facts and links Beck compiles over time. Deli
 Things Beck has created — some link to GitHub, some are physical (e.g. art). Includes a flip-through digital recipe book that Beck populates with favorite recipes.
 
 ### Stats
-Links out to Beck's Goodreads, Letterboxd, Beli, and Hevy — a life-tracking dashboard of sorts.
+Links out to Beck's Goodreads, Letterboxd, Beli, and Hevy — a life-tracking dashboard of sorts. Also hosts a visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below.
 
 ### Thoughts
 A blog section.
@@ -62,9 +62,21 @@ Visitors leave a short message and/or drawing. Visible as a scrollable feed, sty
 
 ## Visual Direction — Chosen
 
-"Field Notes": a travel-journal register. Light manila-paper background, warm near-black ink, a medium/light pink accent (nav states, headings, links), brass for pushpins and stamped dates. Slab-serif display type, warm serif body copy, typewriter mono for labels/dates. Working prototype lives at `/prototype/field-notes.html` (static HTML/CSS, no build step — a design reference to translate into Next.js components, not the final implementation).
+"Field Notes": a travel-journal register. Light manila-paper background, warm near-black ink, a medium/light pink accent (nav states, headings, links), brass for pushpins and stamped dates. Slab-serif display type, warm serif body copy, typewriter mono for labels/dates. Working prototype lives at `/prototype/field-notes.html` (static HTML/CSS, no build step — a design reference for the rest of the site). Its design tokens/base styles have been ported into `app/globals.css` for the real app.
+
+## Real App — Started
+
+The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Most sections are still placeholder shells ported from the prototype (Projects, Fun Facts, Travel, Thoughts) — only About and the Stats/frog-chart feature are fully real so far. The elaborate Travel snake-path/plane/tabs system from the prototype still needs porting into a React component.
+
+**Frog chart** (`components/FrogChart.js`, `app/api/frogs/route.js`, `models/FrogSubmission.js`): visitors submit a number for "roughly how many frogs have you held?"; the histogram (log-scaled bins, since answers cluster near zero) is rendered from all submissions, with Beck's own value (150) shown as a fixed marker rather than a submission.
+
+- **One submission per visitor, editable:** identified by an httpOnly cookie (90-day, not a strict browser-session cookie — chosen so a returning visitor can still fix their number, at the cost of not matching "session" in the narrowest sense; revisit if that's not what was wanted). The submission doc is upserted by that cookie's ID, so resubmitting edits rather than duplicating.
+- **Hidden range cap:** server validates 0–1000 and returns the same generic error message regardless of why a value was rejected (too high, negative, not a number) — the client never sees the bound.
+- **Rate limiting (best-effort, no external service):** a 3-second cooldown between edits from the same session, plus a per-IP cap of 20 new (not-yet-existing) sessions per hour to blunt cookie-clearing abuse. Both live in MongoDB rather than in-memory, since Vercel serverless functions don't share memory reliably across invocations.
+- **Local dev:** if `MONGODB_URI` isn't set, `lib/mongodb.js` falls back to an in-memory MongoDB (`mongodb-memory-server`) automatically — nothing to configure to start hacking, but data doesn't persist across dev server restarts. Production requires a real `MONGODB_URI` (see `.env.local.example`).
 
 ## Open Decisions
 
-- CSS approach: CSS Modules / plain CSS vs. a utility framework — to be settled once the prototype is far enough along to judge how well the chosen look translates to code.
+- CSS approach: CSS Modules / plain CSS vs. a utility framework — to be settled once more of the site is ported over.
 - Guestbook drawing input mechanism (canvas-based sketch vs. simple markup) and storage target.
+- Porting the Travel section's snake path/plane/tabs and the Guestbook sidebar into real React components.
