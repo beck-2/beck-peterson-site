@@ -60,9 +60,9 @@ export default function FrogChart() {
         {data.bins.map((bin, i) => (
           <div className="frog-bar-col" key={bin.label}>
             {i === data.beckBinIndex && (
-              <div className="frog-marker" title={`Beck · ${data.beckValue}`}>
-                <span className="frog-marker-dot" />
-                <span className="frog-marker-label">beck</span>
+              <div className="frog-beck-arrow" title={`Beck · ${data.beckValue}`}>
+                <span className="frog-beck-arrow-label">beck</span>
+                <span className="frog-beck-arrow-glyph">↓</span>
               </div>
             )}
             <div

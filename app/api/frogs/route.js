@@ -16,10 +16,20 @@ const IP_MAX_NEW_SUBMISSIONS = 20; // new (not-yet-existing) sessions per IP per
 const BIN_EDGES = [0, 1, 3, 6, 11, 26, 51, 101, 1001];
 const BIN_LABELS = ["0", "1–2", "3–5", "6–10", "11–25", "26–50", "51–100", "100+"];
 
-// Beck's own answer, shown on the chart as a fixed reference point rather
-// than a submission — it doesn't go through the form, so it never counts
-// against the rate limit or total.
+// Beck's own answer. Seeded as a real document (under a reserved session id
+// a real visitor's crypto.randomUUID() cookie can never collide with) so it
+// counts toward the total and its bin like any other submission, rather than
+// being a hardcoded number excluded from the real data.
+const BECK_SESSION_ID = "beck-owner";
 const BECK_VALUE = 150;
+
+async function ensureBeckSeed() {
+  await FrogSubmission.findOneAndUpdate(
+    { sessionId: BECK_SESSION_ID },
+    { sessionId: BECK_SESSION_ID, value: BECK_VALUE, ip: "owner" },
+    { upsert: true, setDefaultsOnInsert: true }
+  );
+}
 
 function binIndexForValue(value) {
   for (let i = 0; i < BIN_EDGES.length - 1; i++) {
@@ -53,6 +63,7 @@ async function buildChartPayload(ownSessionId) {
 
 export async function GET() {
   await dbConnect();
+  await ensureBeckSeed();
   const cookieStore = await cookies();
   const sessionId = cookieStore.get(SESSION_COOKIE)?.value || null;
   const payload = await buildChartPayload(sessionId);
@@ -61,6 +72,7 @@ export async function GET() {
 
 export async function POST(request) {
   await dbConnect();
+  await ensureBeckSeed();
 
   let body;
   try {
