@@ -161,6 +161,184 @@ section.block {
   transform: rotate(-0.4deg);
 }
 
+.trip-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-left: 0.25rem;
+}
+.trip-tab {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  background: var(--paper-alt);
+  color: var(--ink-soft);
+  border: 1px solid var(--line);
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  padding: 0.32rem 0.6rem 0.26rem;
+  cursor: pointer;
+  position: relative;
+  top: 1px;
+}
+.trip-tab:hover {
+  color: var(--ink);
+}
+.trip-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.trip-tab.active {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+/* Travel */
+.trip-blurb {
+  max-width: 42ch;
+  margin: 0 0 2.5rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.travel-snake {
+  position: relative;
+}
+svg.route {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+#routePath {
+  transition: stroke 0.2s ease;
+}
+
+/* Stays at a fixed height in the viewport (cruising altitude) while the
+   route scrolls past beneath it; only its horizontal position moves. */
+.plane-track {
+  position: sticky;
+  top: 38vh;
+  height: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.plane-icon {
+  position: absolute;
+  top: -14px;
+  left: -14px;
+  overflow: visible;
+  transition: opacity 0.15s linear;
+}
+
+.stop {
+  position: absolute;
+  z-index: 2;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 168px;
+}
+.pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e6b95c, var(--brass) 65%);
+  flex: none;
+}
+.thread {
+  width: 1px;
+  height: 14px;
+  background: var(--ink-soft);
+  opacity: 0.5;
+  flex: none;
+}
+.polaroid {
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 10px 10px 34px;
+  width: 168px;
+  flex: none;
+  position: relative;
+  outline: 3px solid transparent;
+  outline-offset: -1px;
+  transform-origin: bottom center;
+  transition: transform 0.25s ease, outline-color 0.25s ease;
+}
+@media (prefers-color-scheme: dark) {
+  .polaroid {
+    background: #d8d3c4;
+  }
+}
+.polaroid .frame {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: repeating-linear-gradient(45deg, #b9b0a0, #b9b0a0 6px, #a89e8c 6px, #a89e8c 12px);
+}
+.polaroid .cap {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  right: 10px;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.62rem;
+  color: #4a4436;
+  text-align: center;
+}
+.stop:nth-child(odd) .polaroid {
+  transform: rotate(-3deg);
+}
+.stop:nth-child(even) .polaroid {
+  transform: rotate(2.5deg);
+}
+.stop.active:nth-child(odd) .polaroid {
+  transform: rotate(-3deg) scale(1.1);
+}
+.stop.active:nth-child(even) .polaroid {
+  transform: rotate(2.5deg) scale(1.1);
+}
+.stop.active .polaroid {
+  outline-color: var(--accent);
+}
+.stop .text {
+  padding-top: 0.6rem;
+  text-align: center;
+}
+.stop .place {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: color 0.2s ease;
+}
+.stop.active .place {
+  color: var(--accent);
+  font-weight: 700;
+}
+.stop .desc {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  max-width: 30ch;
+  transition: opacity 0.2s ease;
+  opacity: 0.75;
+}
+.stop.active .desc {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .polaroid,
+  .stop .place,
+  .stop .desc {
+    transition: none;
+  }
+}
+
 .quiet-note {
   font-size: 0.85rem;
   color: var(--ink-soft);

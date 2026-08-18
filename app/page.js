@@ -1,7 +1,8 @@
-// ABOUTME: The site's single scrolling page — About plus placeholder sections for
-// ABOUTME: everything not yet ported from the prototype, and the real Stats/FrogChart feature.
+// ABOUTME: The site's single scrolling page — About, Travel, and Stats/FrogChart are real;
+// ABOUTME: Projects/Fun Facts/Thoughts are still placeholder shells awaiting real content.
 import Nav from "@/components/Nav";
 import FrogChart from "@/components/FrogChart";
+import TravelSnake from "@/components/TravelSnake";
 
 export default function Home() {
   return (
@@ -42,15 +43,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="block" id="travel">
-          <div className="section-head">
-            <h2 className="stamp">Travel</h2>
-          </div>
-          <p className="quiet-note">
-            [The snake-path timeline from the prototype (prototype/field-notes.html) still needs to
-            be ported into a React component — placeholder for now.]
-          </p>
-        </section>
+        <TravelSnake />
 
         <section className="block" id="stats">
           <div className="section-head">

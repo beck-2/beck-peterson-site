@@ -66,7 +66,9 @@ Visitors leave a short message and/or drawing. Visible as a scrollable feed, sty
 
 ## Real App — Started
 
-The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Most sections are still placeholder shells ported from the prototype (Projects, Fun Facts, Travel, Thoughts) — only About and the Stats/frog-chart feature are fully real so far. The elaborate Travel snake-path/plane/tabs system from the prototype still needs porting into a React component.
+The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects, Fun Facts, and Thoughts are still placeholder shells ported from the prototype — About, Travel, and the Stats/frog-chart feature are fully real.
+
+**Travel** (`components/TravelSnake.js`): the snake-path/plane/tabs system ported 1:1 from the prototype. Stop markup (pin/thread/polaroid/caption) is rendered declaratively per trip from a `TRIPS` object; the snake path generation, sticky-plane scroll tracking, edge fade, and proximity highlight stay imperative (a `useEffect` keyed on the active trip, operating on refs) since that logic is fundamentally a scroll-linked animation, not view state — rewriting it as declarative React state would risk subtly changing behavior that took many iterations to get right.
 
 **Frog chart** (`components/FrogChart.js`, `app/api/frogs/route.js`, `models/FrogSubmission.js`): visitors submit a number for "roughly how many frogs have you held?"; the histogram (log-scaled bins, since answers cluster near zero) is rendered from all submissions, with Beck's own value (150) shown as a fixed marker rather than a submission.
 
@@ -79,4 +81,4 @@ The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `mode
 
 - CSS approach: CSS Modules / plain CSS vs. a utility framework — to be settled once more of the site is ported over.
 - Guestbook drawing input mechanism (canvas-based sketch vs. simple markup) and storage target.
-- Porting the Travel section's snake path/plane/tabs and the Guestbook sidebar into real React components.
+- Porting the Guestbook sidebar into a real React component (still prototype-only).
