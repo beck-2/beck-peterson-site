@@ -1,5 +1,6 @@
 // ABOUTME: The site's single scrolling page — About, Travel, and Stats/FrogChart are real;
 // ABOUTME: Projects/Fun Facts/Thoughts are still placeholder shells awaiting real content.
+import Image from "next/image";
 import Nav from "@/components/Nav";
 import FrogChart from "@/components/FrogChart";
 import TravelSnake from "@/components/TravelSnake";
@@ -10,6 +11,16 @@ export default function Home() {
       <Nav />
       <main>
         <section className="hero" id="about">
+          <div className="hero-doodle">
+            <Image
+              src="/images/bluecat.png"
+              alt="A little blue line-drawing of a cat"
+              fill
+              sizes="150px"
+              style={{ objectFit: "cover", objectPosition: "top" }}
+              priority
+            />
+          </div>
           <h1 className="stamp">Beck Peterson</h1>
           <p className="tagline">A little observer of a big universe.</p>
           <details className="dropdown">

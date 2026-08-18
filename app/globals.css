@@ -113,8 +113,22 @@ main {
 }
 
 .hero {
+  position: relative;
   text-align: left;
   margin-bottom: 4rem;
+}
+.hero-doodle {
+  position: absolute;
+  top: -0.5rem;
+  right: 0.5rem;
+  width: 150px;
+  height: 110px;
+  transform: rotate(4deg);
+}
+@media (max-width: 600px) {
+  .hero-doodle {
+    display: none;
+  }
 }
 .hero h1 {
   font-size: clamp(2.2rem, 6vw, 3.4rem);
