@@ -126,8 +126,20 @@
   svg.route { position: absolute; left: 0; top: 0; overflow: visible; }
   #routePath { transition: stroke 0.2s ease; }
 
+  /* Stays at a fixed height in the viewport (cruising altitude) while the
+     route scrolls past beneath it; only its horizontal position moves. */
+  .plane-track {
+    position: sticky;
+    top: 38vh;
+    height: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .plane-icon { position: absolute; top: -14px; left: -14px; overflow: visible; }
+
   .stop {
     position: absolute;
+    z-index: 2;
     transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center;
     width: 168px;
@@ -266,12 +278,14 @@
       <span class="mono-label">chronological</span>
     </div>
     <div class="travel-snake" id="travelSnake">
-      <svg class="route" id="routeSvg">
-        <path id="routePath" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round"/>
-        <g id="plane" class="plane">
+      <div class="plane-track" id="planeTrack">
+        <svg class="plane-icon" id="planeIcon" width="28" height="28" viewBox="-14 -14 28 28">
           <path d="M0,-11 C1.4,-11 2,-8.6 2,-6.4 L2,-3.6 L9.6,1.8 L9.6,4 L2,1.6 L2,6.6 L4.8,9 L4.8,10.6 L0,9 L-4.8,10.6 L-4.8,9 L-2,6.6 L-2,1.6 L-9.6,4 L-9.6,1.8 L-2,-3.6 L-2,-6.4 C-2,-8.6 -1.4,-11 0,-11 Z"
             fill="var(--brass)" stroke="var(--ink)" stroke-width="0.5" stroke-linejoin="round"/>
-        </g>
+        </svg>
+      </div>
+      <svg class="route" id="routeSvg">
+        <path id="routePath" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round"/>
       </svg>
       <div class="stop">
         <div class="pin"></div><div class="thread"></div>
@@ -342,9 +356,11 @@
     var wrap = document.getElementById('travelSnake');
     var svg = document.getElementById('routeSvg');
     var path = document.getElementById('routePath');
-    var plane = document.getElementById('plane');
+    var plane = document.getElementById('planeIcon');
     var stops = Array.prototype.slice.call(wrap.querySelectorAll('.stop'));
     if (!wrap || !svg || !path || !plane || !stops.length) return;
+
+    var STICKY_FRAC = 0.38; // must match .plane-track's `top: 38vh`
 
     // Smooth curve through a point set (Catmull-Rom -> cubic Bezier).
     function smoothPath(points) {
@@ -361,7 +377,7 @@
       return d;
     }
 
-    var anchors = [], len = 0, stopLens = [];
+    var anchors = [], len = 0, stopLens = [], samples = [];
 
     function layout() {
       var W = wrap.getBoundingClientRect().width;
@@ -388,7 +404,7 @@
 
       // Sample the path finely to find each stop's arc-length position.
       var SAMPLES = 600;
-      var samples = [];
+      samples = [];
       for (var s = 0; s <= SAMPLES; s++) {
         var l = (s / SAMPLES) * len;
         samples.push({ l: l, pt: path.getPointAtLength(l) });
@@ -412,23 +428,34 @@
 
       if (reduce) {
         var startPt = path.getPointAtLength(0);
-        plane.setAttribute('transform', 'translate(' + startPt.x + ',' + startPt.y + ')');
+        plane.style.transform = 'translate(' + startPt.x + 'px, 0)';
       } else {
         update();
       }
     }
 
+    // Finds the sample whose y is closest to targetY (the path's local y
+    // that currently lines up with the plane's fixed on-screen altitude).
+    function sampleNearestY(targetY) {
+      var best = samples[0];
+      for (var i = 1; i < samples.length; i++) {
+        if (Math.abs(samples[i].pt.y - targetY) < Math.abs(best.pt.y - targetY)) best = samples[i];
+      }
+      return best;
+    }
+
     function update() {
-      var rect = wrap.getBoundingClientRect();
-      var vh = window.innerHeight;
-      var total = rect.height + vh;
-      var scrolled = vh - rect.top;
-      var frac = Math.min(1, Math.max(0, scrolled / total));
-      var atLen = frac * len;
-      var pt = path.getPointAtLength(atLen);
+      var svgTop = svg.getBoundingClientRect().top + window.scrollY;
+      var lastY = anchors[anchors.length - 1].y;
+      var targetY = window.scrollY + window.innerHeight * STICKY_FRAC - svgTop;
+      targetY = Math.min(lastY, Math.max(0, targetY));
+
+      var sample = sampleNearestY(targetY);
+      var atLen = sample.l;
+      var pt = sample.pt;
       var pt2 = path.getPointAtLength(Math.min(len, atLen + 1));
       var angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI + 90;
-      plane.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ') rotate(' + angle + ')');
+      plane.style.transform = 'translate(' + pt.x + 'px, 0) rotate(' + angle + 'deg)';
 
       var closest = 0, closestDist = Infinity;
       stopLens.forEach(function (l, i) {
