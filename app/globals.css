@@ -56,6 +56,7 @@ body {
 
 a {
   color: var(--accent);
+  cursor: inherit;
 }
 
 .stamp {
@@ -132,7 +133,7 @@ details.dropdown {
   padding-top: 1rem;
 }
 details.dropdown summary {
-  cursor: pointer;
+  cursor: inherit;
   font-family: "Courier New", ui-monospace, monospace;
   font-size: 0.8rem;
   letter-spacing: 0.08em;
@@ -188,7 +189,7 @@ section.block {
   border-bottom: none;
   border-radius: 4px 4px 0 0;
   padding: 0.32rem 0.6rem 0.26rem;
-  cursor: pointer;
+  cursor: inherit;
   position: relative;
   top: 1px;
 }
@@ -479,11 +480,11 @@ svg.route {
   color: var(--paper);
   border: none;
   padding: 0.5rem 1rem;
-  cursor: pointer;
+  cursor: inherit;
 }
 .frog-form button:disabled {
   opacity: 0.6;
-  cursor: default;
+  cursor: inherit;
 }
 .frog-error {
   color: var(--accent);
