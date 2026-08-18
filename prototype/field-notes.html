@@ -1,0 +1,343 @@
+<title>Beck Peterson — Field Notes</title>
+<style>
+  :root {
+    --paper: #F3EEDF;
+    --paper-alt: #EAE2CC;
+    --ink: #2B2620;
+    --ink-soft: #5A5240;
+    --accent: #D98A9B;
+    --brass: #B4863A;
+    --line: rgba(43,38,32,0.2);
+    --card: #F8F3E5;
+    --shadow: rgba(43,38,32,0.28);
+  }
+  :root[data-theme="dark"] {
+    --paper: #221C14;
+    --paper-alt: #2B2419;
+    --ink: #EDE3CC;
+    --ink-soft: #B9AD8E;
+    --accent: #E9A9B8;
+    --brass: #D9A94B;
+    --line: rgba(237,227,204,0.22);
+    --card: #2B2419;
+    --shadow: rgba(0,0,0,0.5);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #221C14;
+      --paper-alt: #2B2419;
+      --ink: #EDE3CC;
+      --ink-soft: #B9AD8E;
+      --accent: #E9A9B8;
+      --brass: #D9A94B;
+      --line: rgba(237,227,204,0.22);
+      --card: #2B2419;
+      --shadow: rgba(0,0,0,0.5);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    background-image:
+      repeating-linear-gradient(transparent, transparent 27px, var(--line) 28px),
+      radial-gradient(ellipse at top left, rgba(0,0,0,0.03), transparent 60%);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: var(--accent); }
+
+  .stamp {
+    font-family: Superclarendon, "Bookman Old Style", "URW Bookman", Georgia, serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .mono-label {
+    font-family: "Courier New", ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  header .name { font-size: 1.1rem; }
+  nav { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--ink-soft); font-size: 0.85rem; }
+  nav a:hover, nav a:focus-visible { color: var(--accent); }
+  nav a.current { color: var(--ink); border-bottom: 2px solid var(--brass); }
+
+  main { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+
+  .hero { text-align: left; margin-bottom: 4rem; }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    margin: 0 0 0.35rem;
+    text-wrap: balance;
+    transform: rotate(-0.6deg);
+  }
+  .hero .tagline {
+    font-size: 1.25rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin: 0 0 1.5rem;
+  }
+  details.dropdown {
+    border-top: 1px dashed var(--line);
+    padding-top: 1rem;
+  }
+  details.dropdown summary {
+    cursor: pointer;
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    list-style: none;
+  }
+  details.dropdown summary::-webkit-details-marker { display: none; }
+  details.dropdown summary::before { content: "+ "; }
+  details.dropdown[open] summary::before { content: "– "; }
+  details.dropdown p {
+    max-width: 60ch;
+    margin: 0.9rem 0 0;
+    font-size: 1.02rem;
+  }
+
+  section.block { margin-bottom: 4.5rem; }
+  .section-head {
+    display: flex; align-items: baseline; gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+  .section-head h2 { font-size: 1.6rem; margin: 0; transform: rotate(-0.4deg); }
+  .section-head .mono-label { transform: translateY(-2px); }
+
+  /* Travel */
+  .travel-path-wrap { position: relative; padding-left: 2.5rem; }
+  svg.route { position: absolute; left: 0; top: 0; width: 60px; height: 100%; overflow: visible; }
+  .plane { transform-origin: center; }
+
+  .stop {
+    position: relative;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    margin-bottom: 3rem;
+  }
+  .polaroid {
+    background: #fff;
+    padding: 10px 10px 34px;
+    box-shadow: 0 8px 16px -6px var(--shadow);
+    width: 168px; flex: none;
+    position: relative;
+  }
+  :root[data-theme="dark"] .polaroid, :root:not([data-theme="light"]) .polaroid { background: #d8d3c4; }
+  .polaroid .frame {
+    width: 100%; aspect-ratio: 1/1;
+    background: repeating-linear-gradient(45deg, #b9b0a0, #b9b0a0 6px, #a89e8c 6px, #a89e8c 12px);
+  }
+  .polaroid .cap {
+    position: absolute; bottom: 8px; left: 10px; right: 10px;
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 0.62rem; color: #4a4436; text-align: center;
+  }
+  .pin {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    width: 16px; height: 16px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e6b95c, var(--brass) 65%);
+    box-shadow: 0 3px 4px var(--shadow);
+  }
+  .stop:nth-child(odd) .polaroid { transform: rotate(-3deg); }
+  .stop:nth-child(even) .polaroid { transform: rotate(2.5deg); }
+  .stop .text { padding-top: 0.4rem; }
+  .stop .place { font-family: "Courier New", ui-monospace, monospace; font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+  .stop .desc { color: var(--ink-soft); font-size: 0.95rem; max-width: 34ch; }
+
+  /* Fun facts jumble */
+  .jumble { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .fact {
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.9rem;
+    max-width: 220px;
+    box-shadow: 2px 3px 0 var(--line);
+  }
+  .fact:nth-child(1) { transform: rotate(-2deg); }
+  .fact:nth-child(2) { transform: rotate(1.5deg); margin-top: 1.2rem; }
+  .fact:nth-child(3) { transform: rotate(-1deg); }
+  .fact:nth-child(4) { transform: rotate(2.2deg); margin-top: 0.6rem; }
+  .fact:nth-child(5) { transform: rotate(-2.6deg); }
+
+  .quiet-note { font-size: 0.85rem; color: var(--ink-soft); font-style: italic; }
+
+  footer {
+    max-width: 720px; margin: 0 auto; padding: 0 1.5rem 3rem;
+    border-top: 1px dashed var(--line); padding-top: 2rem;
+    display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-between; align-items: flex-end;
+  }
+  .contact-box {
+    border: 1px solid var(--line); padding: 0.75rem 1rem; background: var(--card);
+    font-family: "Courier New", ui-monospace, monospace; font-size: 0.8rem; color: var(--ink-soft);
+    max-width: 280px;
+  }
+  .links { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .links a { font-size: 0.85rem; }
+
+  /* Guestbook rail */
+  .guestbook-rail {
+    position: fixed; right: 0; top: 90px; bottom: 0; width: 236px;
+    background: var(--paper-alt); border-left: 1px dashed var(--line);
+    padding: 1rem; overflow-y: auto; z-index: 10;
+  }
+  .guestbook-rail h3 { font-size: 0.95rem; margin: 0 0 0.75rem; }
+  .gb-entry {
+    background: var(--card); border: 1px solid var(--line);
+    padding: 0.6rem 0.7rem; margin-bottom: 0.7rem; font-size: 0.82rem;
+    position: relative;
+  }
+  .gb-entry .who { font-family: "Courier New", ui-monospace, monospace; font-size: 0.65rem; color: var(--brass); text-transform: uppercase; }
+  .gb-entry .del { position: absolute; top: 4px; right: 6px; font-size: 0.65rem; color: var(--ink-soft); opacity: 0; cursor: pointer; }
+  .gb-entry:hover .del { opacity: 0.7; }
+  .gb-input { width: 100%; margin-top: 0.5rem; }
+  .gb-input textarea { width: 100%; font-family: inherit; font-size: 0.8rem; border: 1px solid var(--line); background: var(--paper); color: var(--ink); padding: 0.4rem; resize: none; }
+  .gb-input button { margin-top: 0.4rem; font-family: "Courier New", ui-monospace, monospace; font-size: 0.72rem; text-transform: uppercase; background: var(--accent); color: var(--paper); border: none; padding: 0.4rem 0.7rem; cursor: pointer; }
+
+  main { margin-right: 236px; }
+  @media (max-width: 900px) {
+    .guestbook-rail { position: static; width: auto; height: auto; border-left: none; border-top: 1px dashed var(--line); margin: 0 1.5rem 3rem; }
+    main { margin-right: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<header>
+  <div class="name stamp">Beck Peterson</div>
+  <nav>
+    <a href="#about" class="current">About</a>
+    <a href="#travel">Travel</a>
+    <a href="#facts">Fun Facts</a>
+    <a href="#projects">Projects</a>
+    <a href="#stats">Stats</a>
+    <a href="#thoughts">Thoughts</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="about">
+    <h1 class="stamp">Beck Peterson</h1>
+    <p class="tagline">A little observer of a big universe.</p>
+    <details class="dropdown">
+      <summary>more</summary>
+      <p>Studying the human brain to improve our knowledge of artificial intelligence and vice versa. Exploring consciousness with no answers yet (let me know if you have some!)</p>
+    </details>
+  </section>
+
+  <section class="block" id="travel">
+    <div class="section-head">
+      <h2 class="stamp">Travel</h2>
+      <span class="mono-label">chronological</span>
+    </div>
+    <div class="travel-path-wrap">
+      <svg class="route" viewBox="0 0 60 780" preserveAspectRatio="none">
+        <path id="routePath" d="M30,10 C 5,120 55,220 30,340 C 5,460 55,560 30,680 C 15,720 30,750 30,770"
+          fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="1 9" stroke-linecap="round"/>
+        <g id="plane" class="plane">
+          <path d="M0,-7 L4,2 L1,2 L1,7 L-1,7 L-1,2 L-4,2 Z" fill="var(--brass)"/>
+        </g>
+      </svg>
+      <div class="stop">
+        <div class="polaroid"><div class="frame"></div><div class="cap">[photo — stop 1]</div><div class="pin"></div></div>
+        <div class="text"><div class="place">Stop one · [place, year]</div><div class="desc">[Beck's description of this trip goes here.]</div></div>
+      </div>
+      <div class="stop">
+        <div class="polaroid"><div class="frame"></div><div class="cap">[photo — stop 2]</div><div class="pin"></div></div>
+        <div class="text"><div class="place">Stop two · [place, year]</div><div class="desc">[Beck's description of this trip goes here.]</div></div>
+      </div>
+      <div class="stop">
+        <div class="polaroid"><div class="frame"></div><div class="cap">[photo — stop 3]</div><div class="pin"></div></div>
+        <div class="text"><div class="place">Stop three · [place, year]</div><div class="desc">[Beck's description of this trip goes here.]</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="facts">
+    <div class="section-head"><h2 class="stamp">Fun Facts</h2></div>
+    <div class="jumble">
+      <div class="fact">[fun fact or link #1]</div>
+      <div class="fact">[fun fact or link #2]</div>
+      <div class="fact">[fun fact or link #3]</div>
+      <div class="fact">[fun fact or link #4]</div>
+      <div class="fact">[fun fact or link #5]</div>
+    </div>
+  </section>
+
+  <section class="block" id="projects">
+    <div class="section-head"><h2 class="stamp">Projects</h2></div>
+    <p class="quiet-note">[GitHub projects, physical art, and a flip-through recipe book land here.]</p>
+  </section>
+
+  <section class="block" id="stats">
+    <div class="section-head"><h2 class="stamp">Stats</h2></div>
+    <p class="quiet-note">[Goodreads · Letterboxd · Beli · Hevy]</p>
+  </section>
+
+  <section class="block" id="thoughts">
+    <div class="section-head"><h2 class="stamp">Thoughts</h2></div>
+    <p class="quiet-note">[Blog posts land here.]</p>
+  </section>
+
+  <footer id="contact">
+    <div class="contact-box">[ send me a note ]<br>&gt; ________________</div>
+    <div class="links">
+      <a href="#">[Email]</a><a href="#">[GitHub]</a><a href="#">[Goodreads]</a><a href="#">[More]</a>
+    </div>
+  </footer>
+</main>
+
+<aside class="guestbook-rail">
+  <h3 class="stamp">Guestbook</h3>
+  <div class="gb-entry"><div class="who">visitor · [date]</div>[a note someone left]<span class="del">delete</span></div>
+  <div class="gb-entry"><div class="who">visitor · [date]</div>[a little doodle]<span class="del">delete</span></div>
+  <div class="gb-entry"><div class="who">visitor · [date]</div>[another note]<span class="del">delete</span></div>
+  <div class="gb-input">
+    <textarea rows="3" placeholder="leave a note or doodle..."></textarea>
+    <button>Sign</button>
+  </div>
+</aside>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var path = document.getElementById('routePath');
+    var plane = document.getElementById('plane');
+    var wrap = document.querySelector('.travel-path-wrap');
+    if (!path || !plane || !wrap || reduce) return;
+    var len = path.getTotalLength();
+    function update() {
+      var rect = wrap.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var total = rect.height + vh;
+      var scrolled = vh - rect.top;
+      var frac = Math.min(1, Math.max(0, scrolled / total));
+      var pt = path.getPointAtLength(frac * len);
+      var pt2 = path.getPointAtLength(Math.min(len, frac * len + 1));
+      var angle = Math.atan2(pt2.y - pt.y, pt2.x - pt.x) * 180 / Math.PI + 90;
+      plane.setAttribute('transform', 'translate(' + pt.x + ',' + pt.y + ') rotate(' + angle + ')');
+    }
+    document.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+</script>
