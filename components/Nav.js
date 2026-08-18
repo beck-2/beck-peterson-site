@@ -8,6 +8,7 @@ export default function Nav() {
         <a href="#projects">Projects</a>
         <a href="#facts">Fun Facts</a>
         <a href="#travel">Travel</a>
+        <a href="#favorites">Favorites</a>
         <a href="#stats">Stats</a>
         <a href="#thoughts">Thoughts</a>
         <a href="#contact">Contact</a>

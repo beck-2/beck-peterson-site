@@ -40,10 +40,17 @@ Dropdown/expandable section. A swirly connecting line with an airplane that anim
 A loose, jumbled collection of fun facts and links Beck compiles over time. Deliberately not a rigid grid — more of a scattered collection feel.
 
 ### Projects
-Things Beck has created — some link to GitHub, some are physical (e.g. art). Includes a flip-through digital recipe book that Beck populates with favorite recipes.
+Things Beck has created — some link to GitHub, some are physical (e.g. art).
+
+### Favorites
+Side-by-side collections, each linked out to the tracker Beck actually uses for that thing. No "Books"/"Movies"/etc. headings — just the visualization and the link:
+- **Books:** a bookshelf visual holding Beck's top ten, spines lettered with the title, linked to Goodreads. One book leans diagonally against its neighbor, marked "currently reading" with an arrow.
+- **Movies:** posters scattered about (not a grid) for Beck's top five, linked to Letterboxd.
+- **Songs:** little scattered discs for Beck's favorites, linked to Spotify. (Spotify's API can pull real top-tracks data, but as of the Feb/March 2026 developer-mode migration that requires the linked Spotify account to have Premium — worth deciding on before wiring up live data.)
+- **Recipes:** a little flip-through recipe notebook Beck keeps adding to over time, linked to Beli. Styled as a stack — a couple of pages visibly peek out behind the front one — and clicking the page advances to the next recipe.
 
 ### Stats
-Links out to Beck's Goodreads, Letterboxd, Beli, and Hevy — a life-tracking dashboard of sorts. Also hosts a visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below.
+Links out to Beck's Hevy — a life-tracking dashboard of sorts. Also hosts a visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below.
 
 ### Thoughts
 A blog section.
@@ -66,9 +73,13 @@ Visitors leave a short message and/or drawing. Visible as a scrollable feed, sty
 
 ## Real App — Started
 
-The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects, Fun Facts, and Thoughts are still placeholder shells ported from the prototype — About, Travel, and the Stats/frog-chart feature are fully real.
+The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects, Fun Facts, and Thoughts are still placeholder shells ported from the prototype — About, Travel, Favorites, and the Stats/frog-chart feature are real (Favorites' sub-collections currently hold placeholder content pending Beck's real books/movies/songs/recipes).
+
+Page order: About, Projects, Fun Facts, Travel, Favorites, Stats, Thoughts, Contact. Favorites sits next to Stats since both are "things Beck tracks elsewhere, shown here."
 
 **Travel** (`components/TravelSnake.js`): the snake-path/plane/tabs system ported 1:1 from the prototype. Stop markup (pin/thread/polaroid/caption) is rendered declaratively per trip from a `TRIPS` object; the snake path generation, sticky-plane scroll tracking, edge fade, and proximity highlight stay imperative (a `useEffect` keyed on the active trip, operating on refs) since that logic is fundamentally a scroll-linked animation, not view state — rewriting it as declarative React state would risk subtly changing behavior that took many iterations to get right.
+
+**Favorites** (`components/Favorites.js`): sub-collections, each linking out to the tracker it mirrors, no group headings — just the visualization and the link. The bookshelf (10 spines → Goodreads, titles set in vertical spine text via `writing-mode`), scattered movie posters (5, rotated like the Fun Facts jumble → Letterboxd), and scattered song discs (8, varied size/offset → Spotify) are static placeholder grids for now. One book spine is rotated to lean against its neighbor with a "currently reading" arrow marker, reusing the same arrow+label pattern as the frog chart's Beck marker. The recipe notebook (→ Beli) is the one interactive piece: a couple of page-shaped divs peek out behind the front page for a stacked look, and clicking the page (a `<button>`, not separate prev/next controls) advances through the `RECIPES` array, wrapping back to the first after the last. Beck adds books/movies/songs/recipes by extending their respective arrays. All placeholder content is bracketed, no invented titles/recipes.
 
 **Frog chart** (`components/FrogChart.js`, `app/api/frogs/route.js`, `models/FrogSubmission.js`): visitors submit a number for "roughly how many frogs have you held?"; the histogram (log-scaled bins, since answers cluster near zero) is rendered from all submissions, with Beck's own value (150) shown as a fixed marker rather than a submission.
 

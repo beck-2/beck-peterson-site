@@ -22,25 +22,25 @@ const TRIPS = {
   solo: {
     label: "Solo",
     year: 2026,
-    blurb: "[Beck's few-line intro to the solo trip goes here.]",
+    blurb: "I began with the ESPR camp (European Summer Program on Rationality), and wound my way around Europe from friend to friend. ",
     stops: makeStops("Solo", 5),
   },
   volcano: {
     label: "Volcano",
     year: 2026,
-    blurb: "[Beck's few-line intro to the volcano trip goes here.]",
+    blurb: "Decided to relax with the family for spring break but ended up climbing a volcano. Almost didn't make it out of the hike.",
     stops: makeStops("Volcano", 2),
   },
   study: {
     label: "Study",
     year: 2025,
-    blurb: "[Beck's few-line intro to the study trip goes here.]",
+    blurb: "Berlin study abroad, hedonism, discovery, and art. Little hops from my Mitte base to visit friends and castles alike.",
     stops: makeStops("Study", 4),
   },
   film: {
     label: "Film",
     year: 2011,
-    blurb: "[Beck's few-line intro to the film trip goes here.]",
+    blurb: "Lived in the middle east for nine months while my parents created a documentary. Only ate chocolate yoghurt and bread.",
     stops: makeStops("Film", 3),
   },
 };

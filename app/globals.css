@@ -376,11 +376,13 @@ svg.route {
   gap: 1rem;
 }
 .fact {
+  display: inline-block;
   background: var(--card);
   border: 1px solid var(--line);
   padding: 0.9rem 1.1rem;
   font-size: 0.9rem;
   max-width: 220px;
+  text-decoration: none;
 }
 .fact:nth-child(1) {
   transform: rotate(-2deg);
@@ -398,6 +400,238 @@ svg.route {
 }
 .fact:nth-child(5) {
   transform: rotate(-2.6deg);
+}
+
+/* Favorites */
+.favorites-group {
+  margin-bottom: 2.5rem;
+}
+.favorites-group:last-child {
+  margin-bottom: 0;
+}
+.favorites-group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.bookshelf {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid var(--brass);
+}
+.book-spine-col {
+  position: relative;
+  flex: none;
+}
+.book-spine {
+  position: relative;
+  flex: none;
+  border: 1px solid var(--line);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.book-spine-col:nth-child(3n + 1) .book-spine {
+  background: var(--paper-alt);
+}
+.book-spine-col:nth-child(3n + 2) .book-spine {
+  background: color-mix(in srgb, var(--accent) 22%, var(--card));
+}
+.book-spine-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(100% - 16px);
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.book-marker {
+  position: absolute;
+  top: -34px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.book-marker-label {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.book-marker-glyph {
+  font-size: 1rem;
+  margin-top: -2px;
+}
+
+.poster-jumble {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 0.75rem;
+}
+.poster {
+  flex: none;
+  width: 100px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 6px 6px 8px;
+}
+.poster-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  background: repeating-linear-gradient(45deg, #b9b0a0, #b9b0a0 6px, #a89e8c 6px, #a89e8c 12px);
+}
+.poster-cap {
+  display: block;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.disc-jumble {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.5rem 1rem;
+}
+.disc-item {
+  position: relative;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.disc {
+  position: relative;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font: inherit;
+  cursor: inherit;
+}
+.disc-item:nth-child(3n + 1) .disc {
+  background: var(--paper-alt);
+}
+.disc-item:nth-child(3n + 2) .disc {
+  background: color-mix(in srgb, var(--accent) 22%, var(--card));
+}
+.disc-hole {
+  position: relative;
+  z-index: 1;
+  width: 20%;
+  height: 20%;
+  min-width: 10px;
+  min-height: 10px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+.disc-spinning {
+  animation: disc-spin 2.4s linear infinite;
+}
+@keyframes disc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .disc-spinning {
+    animation: none;
+  }
+}
+.disc-embed-host {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.disc-cap {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.recipe-notebook {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 0.75rem 0 2rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: inherit;
+}
+.notebook-page-behind {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--paper-alt);
+  border: 1px solid var(--line);
+}
+.notebook-page-behind-1 {
+  transform: translate(5px, 6px) rotate(1.5deg);
+}
+.notebook-page-behind-2 {
+  transform: translate(9px, 11px) rotate(-2deg);
+}
+.recipe-page {
+  position: relative;
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 1.25rem 1.25rem 1rem;
+  min-height: 150px;
+}
+.recipe-title {
+  display: block;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+.recipe-body {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.recipe-page-count {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.9rem;
 }
 
 /* Frog chart */

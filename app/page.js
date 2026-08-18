@@ -1,9 +1,18 @@
-// ABOUTME: The site's single scrolling page — About, Travel, and Stats/FrogChart are real;
+// ABOUTME: The site's single scrolling page — About, Travel, Favorites, and Stats/FrogChart are real;
 // ABOUTME: Projects/Fun Facts/Thoughts are still placeholder shells awaiting real content.
 import Image from "next/image";
 import Nav from "@/components/Nav";
 import FrogChart from "@/components/FrogChart";
 import TravelSnake from "@/components/TravelSnake";
+import Favorites from "@/components/Favorites";
+
+const FUN_FACTS = [
+  { label: "randomness", href: "https://www.random.org/analysis/" },
+  { label: "parachutes don’t work", href: "https://www.bmj.com/content/363/bmj.k5094" },
+  { label: "life", href: "https://playgameoflife.com/" },
+  { label: "isochrone map", href: "http://emptypipes.org/2015/05/20/europe-isochrone-map/" },
+  { label: "qualia", href: "https://qri.org/oscilleditor/" },
+];
 
 export default function Home() {
   return (
@@ -36,9 +45,7 @@ export default function Home() {
           <div className="section-head">
             <h2 className="stamp">Projects</h2>
           </div>
-          <p className="quiet-note">
-            [GitHub projects, physical art, and a flip-through recipe book land here.]
-          </p>
+          <p className="quiet-note">[GitHub projects and physical art land here.]</p>
         </section>
 
         <section className="block" id="facts">
@@ -46,21 +53,29 @@ export default function Home() {
             <h2 className="stamp">Fun Facts</h2>
           </div>
           <div className="jumble">
-            <div className="fact">[fun fact or link #1]</div>
-            <div className="fact">[fun fact or link #2]</div>
-            <div className="fact">[fun fact or link #3]</div>
-            <div className="fact">[fun fact or link #4]</div>
-            <div className="fact">[fun fact or link #5]</div>
+            {FUN_FACTS.map((fact) => (
+              <a
+                href={fact.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fact"
+                key={fact.label}
+              >
+                {fact.label}
+              </a>
+            ))}
           </div>
         </section>
 
         <TravelSnake />
 
+        <Favorites />
+
         <section className="block" id="stats">
           <div className="section-head">
             <h2 className="stamp">Stats</h2>
           </div>
-          <p className="quiet-note">[Goodreads · Letterboxd · Beli · Hevy links land here.]</p>
+          <p className="quiet-note">[Hevy links land here.]</p>
           <FrogChart />
         </section>
 
