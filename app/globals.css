@@ -415,7 +415,7 @@ section.block {
   font-size: 0.98rem;
   line-height: 1.6;
   color: var(--ink-soft);
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
 }
 .travel-snake {
   position: relative;
@@ -563,7 +563,7 @@ svg.route {
 .quiet-note {
   font-size: 0.85rem;
   color: var(--ink-soft);
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
 }
 
 .jumble {
@@ -617,14 +617,37 @@ svg.route {
   line-height: 1;
 }
 .project-carousel {
+  position: relative;
   margin-bottom: 2.5rem;
 }
 .project-carousel:last-child {
   margin-bottom: 0;
 }
+.project-track-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.project-arrow {
+  flex: none;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+  line-height: 1;
+  width: 28px;
+  height: 28px;
+  cursor: inherit;
+}
+.project-arrow:hover,
+.project-arrow:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
 .project-track-viewport {
-  overflow-x: hidden;
-  overflow-y: visible;
+  /* Nothing inside needs to escape vertically anymore — .project-details
+     lives outside this element now — so both axes can just clip cleanly. */
+  overflow: hidden;
   padding: 0.5rem 0;
 }
 .project-track {
@@ -632,31 +655,14 @@ svg.route {
   align-items: flex-start;
   gap: 1.25rem;
   width: max-content;
-  animation: project-drift 32s linear infinite;
-}
-.project-track.paused {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .project-track {
-    animation: none;
-  }
-}
-@keyframes project-drift {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
 }
 .project-card {
+  position: relative;
   flex: none;
   cursor: inherit;
   transition: transform 0.25s ease;
 }
 .project-card.active {
-  position: relative;
   z-index: 2;
   transform: scale(1.12);
 }
@@ -686,20 +692,22 @@ svg.route {
   height: 160px;
   background: repeating-linear-gradient(45deg, #b9b0a0, #b9b0a0 6px, #a89e8c 6px, #a89e8c 12px);
 }
-.project-type-dots {
-  position: absolute;
-  top: 8px;
-  right: 8px;
+.project-meta {
   display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.project-type-dots {
+  display: flex;
+  flex: none;
   gap: 4px;
-  z-index: 1;
 }
 .project-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
 }
 .project-type-dots.collab .project-dot {
   background: var(--collab-blue);
@@ -716,14 +724,21 @@ svg.route {
   color: var(--collab-blue);
 }
 .project-title {
-  margin-top: 6px;
-  text-align: center;
+  margin: 0;
+  white-space: nowrap;
   font-size: 0.75rem;
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
   color: var(--ink-soft);
 }
+/* One details panel per carousel (not per card), positioned via JS to sit
+   under whichever card is active — see Projects.js. Living outside the
+   horizontally-clipped track viewport (as a sibling, not a descendant)
+   means the viewport's overflow-x: hidden never clips it, regardless of
+   where it's positioned. */
 .project-details {
-  margin-top: 6px;
+  position: absolute;
+  z-index: 3;
+  max-width: 300px;
   padding: 0.6rem 0.7rem;
   background: var(--card);
   border: 1px solid var(--line);
@@ -855,7 +870,7 @@ svg.route {
   margin-top: 6px;
   text-align: center;
   font-size: 0.68rem;
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
   color: var(--ink-soft);
 }
 
@@ -885,7 +900,7 @@ svg.route {
   margin-top: 6px;
   text-align: center;
   font-size: 0.68rem;
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
   color: var(--ink-soft);
 }
 
@@ -975,7 +990,7 @@ svg.route {
   margin-top: 6px;
   text-align: center;
   font-size: 0.68rem;
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
   color: var(--ink-soft);
   line-height: 1.4;
 }
@@ -1027,7 +1042,7 @@ svg.route {
   display: block;
   font-size: 0.95rem;
   color: var(--ink-soft);
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
   white-space: pre-wrap;
 }
 .recipe-page-count {
@@ -1370,7 +1385,7 @@ footer.site-footer {
   margin: 1.5rem auto 0;
   padding: 0 1.5rem;
   font-size: 0.8rem;
-  font-style: italic;
+  font-family: "Courier New", ui-monospace, monospace;
   color: var(--accent);
   text-align: center;
 }
