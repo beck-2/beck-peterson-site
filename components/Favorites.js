@@ -31,7 +31,18 @@ const MOVIES = [
 ];
 
 const RECIPES = [
-  { title: "[recipe title]", body: "[Beck's recipe goes here — ingredients, steps, notes.]" },
+  {
+    title: "Lavender Lemonade",
+    body: "harvest fresh lavender and heat on low with sugar and water for a long time. Let it cool... you have created lavender simple syrup! Mix with lemon juice, water, and ice to make lavender lemonade.",
+  },
+  {
+    title: "Frozen Mocha Cheesecake",
+    body: "?????? CLASSIFIED ????????\n*ask Beck nicely and she might make it for you*",
+  },
+  {
+    title: "Perfect Sandwich",
+    body: "rub a fresh garlic clove on toasted olive foccaccia, then spread with goat cheese, arugala, and prosciutto. Drizzle with olive oil and enjoy your messy repas.",
+  },
 ];
 
 const CATS = [
@@ -147,6 +158,42 @@ export default function Favorites() {
 
       <div className="favorites-group">
         <div className="favorites-group-head">
+          <a href={LINKS.spotify} target="_blank" rel="noopener noreferrer" className="mono-label">
+            spotify →
+          </a>
+        </div>
+        <div className="disc-callout">
+          <span className="disc-callout-text">click to play</span>
+          <span className="disc-callout-arrow" aria-hidden="true">
+            ↓
+          </span>
+        </div>
+        <div className="disc-jumble">
+          {SONGS.map((song, i) => (
+            <div className="disc-item" key={i} style={{ marginTop: song.offset }}>
+              <button
+                type="button"
+                className={"disc" + (playingIndex === i ? " disc-spinning" : "")}
+                style={{ width: song.size, height: song.size }}
+                onClick={() => handleDiscClick(i)}
+                aria-label={(playingIndex === i ? "Pause " : "Play ") + song.title + " by " + song.artist}
+              >
+                <Image src={song.src} alt="" fill sizes="105px" style={{ objectFit: "cover" }} />
+                <span className="disc-hole" />
+              </button>
+              <div ref={(el) => (embedHostRefs.current[i] = el)} className="disc-embed-host" />
+              <div className="disc-cap">
+                {song.title}
+                <br />
+                {song.artist}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="favorites-group">
+        <div className="favorites-group-head">
           <a href={LINKS.goodreads} target="_blank" rel="noopener noreferrer" className="mono-label">
             goodreads →
           </a>
@@ -166,6 +213,30 @@ export default function Favorites() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="favorites-group">
+        <div className="favorites-group-head">
+          <a href={LINKS.beli} target="_blank" rel="noopener noreferrer" className="mono-label">
+            beli →
+          </a>
+        </div>
+        <button
+          type="button"
+          className="recipe-notebook"
+          onClick={() => setRecipeIndex((i) => (i + 1) % RECIPES.length)}
+          aria-label="Next recipe"
+        >
+          <span className="notebook-page-behind notebook-page-behind-2" />
+          <span className="notebook-page-behind notebook-page-behind-1" />
+          <span className="recipe-page">
+            <span className="recipe-title">{recipe.title}</span>
+            <span className="recipe-body">{recipe.body}</span>
+            <span className="mono-label recipe-page-count">
+              pg. {recipeIndex + 1}/{RECIPES.length}
+            </span>
+          </span>
+        </button>
       </div>
 
       <div className="favorites-group">
@@ -196,60 +267,6 @@ export default function Favorites() {
             </div>
           ))}
         </div>
-      </div>
-
-      <div className="favorites-group">
-        <div className="favorites-group-head">
-          <a href={LINKS.spotify} target="_blank" rel="noopener noreferrer" className="mono-label">
-            spotify →
-          </a>
-        </div>
-        <div className="disc-jumble">
-          {SONGS.map((song, i) => (
-            <div className="disc-item" key={i} style={{ marginTop: song.offset }}>
-              <button
-                type="button"
-                className={"disc" + (playingIndex === i ? " disc-spinning" : "")}
-                style={{ width: song.size, height: song.size }}
-                onClick={() => handleDiscClick(i)}
-                aria-label={(playingIndex === i ? "Pause " : "Play ") + song.title + " by " + song.artist}
-              >
-                <Image src={song.src} alt="" fill sizes="105px" style={{ objectFit: "cover" }} />
-                <span className="disc-hole" />
-              </button>
-              <div ref={(el) => (embedHostRefs.current[i] = el)} className="disc-embed-host" />
-              <div className="disc-cap">
-                {song.title}
-                <br />
-                {song.artist}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="favorites-group">
-        <div className="favorites-group-head">
-          <a href={LINKS.beli} target="_blank" rel="noopener noreferrer" className="mono-label">
-            beli →
-          </a>
-        </div>
-        <button
-          type="button"
-          className="recipe-notebook"
-          onClick={() => setRecipeIndex((i) => (i + 1) % RECIPES.length)}
-          aria-label="Next recipe"
-        >
-          <span className="notebook-page-behind notebook-page-behind-2" />
-          <span className="notebook-page-behind notebook-page-behind-1" />
-          <span className="recipe-page">
-            <span className="recipe-title">{recipe.title}</span>
-            <span className="recipe-body">{recipe.body}</span>
-            <span className="mono-label recipe-page-count">
-              pg. {recipeIndex + 1}/{RECIPES.length}
-            </span>
-          </span>
-        </button>
       </div>
 
       <div className="favorites-group">

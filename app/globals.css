@@ -154,15 +154,16 @@ main {
 }
 
 /* Wide windows (wider than tall, e.g. a maximized desktop window) switch to a
-   three-column layout: a photo sidebar, the normal single-column content, and
-   the Logbook as a persistent right sidebar. min-width guards against tiny
-   landscape phones, where three columns wouldn't have room to breathe. */
+   two-column layout: a photo sidebar plus the normal single-column content
+   (Logbook included, always inline in Stats — it doesn't get its own
+   sidebar). min-width guards against tiny landscape phones, where even two
+   columns wouldn't have room to breathe. */
 @media (orientation: landscape) and (min-width: 900px) {
   main.page-grid {
-    max-width: 1240px;
+    max-width: 900px;
     display: grid;
-    grid-template-columns: minmax(90px, 120px) minmax(0, 720px) minmax(240px, 340px);
-    grid-template-rows: repeat(7, auto);
+    grid-template-columns: minmax(90px, 120px) minmax(0, 720px);
+    grid-template-rows: repeat(8, auto);
     column-gap: 2.5rem;
     align-items: start;
   }
@@ -174,15 +175,6 @@ main {
     grid-column: 1;
     grid-row: 1 / -1;
     padding-top: 0.5rem;
-  }
-  .logbook-slot {
-    grid-column: 3;
-    grid-row: 1 / -1;
-    margin-bottom: 0;
-  }
-  .logbook-slot .logbook-feed {
-    max-height: none !important;
-    overflow: visible;
   }
   #about {
     grid-column: 2;
@@ -204,13 +196,17 @@ main {
     grid-column: 2;
     grid-row: 5;
   }
-  #facts {
+  .logbook-slot {
     grid-column: 2;
     grid-row: 6;
   }
-  #contact {
+  #facts {
     grid-column: 2;
     grid-row: 7;
+  }
+  #contact {
+    grid-column: 2;
+    grid-row: 8;
   }
 }
 
@@ -218,6 +214,11 @@ main {
   position: relative;
   text-align: left;
   margin-bottom: 4rem;
+  /* The wide-layout sidebar can squeeze this column much narrower than the
+     viewport itself, so the doodle needs to react to its own container's
+     width rather than the viewport's — a plain media query can't see that. */
+  container-type: inline-size;
+  container-name: hero;
 }
 .hero-doodle {
   position: absolute;
@@ -227,7 +228,7 @@ main {
   height: 175px;
   transform: rotate(4deg);
 }
-@media (max-width: 600px) {
+@container hero (max-width: 600px) {
   .hero-doodle {
     display: none;
   }
@@ -641,6 +642,23 @@ svg.route {
   color: var(--ink-soft);
 }
 
+.disc-callout {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+  color: var(--accent);
+}
+.disc-callout-text {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.disc-callout-arrow {
+  font-size: 1rem;
+  line-height: 1;
+}
 .disc-jumble {
   display: flex;
   flex-wrap: wrap;
@@ -763,6 +781,7 @@ svg.route {
   font-size: 0.95rem;
   color: var(--ink-soft);
   font-style: italic;
+  white-space: pre-wrap;
 }
 .recipe-page-count {
   position: absolute;
