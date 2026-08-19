@@ -293,12 +293,13 @@ main {
   container-name: hero;
 }
 .hero-doodle {
-  position: absolute;
-  top: -1.25rem;
-  right: 0.5rem;
-  width: 240px;
-  height: 175px;
-  transform: rotate(4deg);
+  position: relative;
+  width: 360px;
+  max-width: 60%;
+  aspect-ratio: 240 / 175;
+  height: auto;
+  margin: 2rem auto 0.5rem;
+  transform: translateX(-60px) rotate(4deg);
 }
 @container hero (max-width: 600px) {
   .hero-doodle {
@@ -313,13 +314,18 @@ main {
 }
 .hero .tagline {
   font-family: "Courier New", ui-monospace, monospace;
-  font-size: 1.1rem;
+  font-size: 1.02rem;
   letter-spacing: 0.02em;
-  color: var(--ink-soft);
+  color: var(--accent);
+  text-align: center;
   margin: 0 0 1.5rem;
+  /* Matches .hero-doodle's shift so this centers relative to the cat, not
+     the full section width. */
+  transform: translateX(-60px);
 }
 .hero-intro {
   max-width: 60ch;
+  font-family: "Courier New", ui-monospace, monospace;
   font-size: 1.02rem;
   color: var(--ink-soft);
   margin: 0 0 1.5rem;
@@ -349,7 +355,9 @@ details.dropdown[open] summary::before {
 details.dropdown p {
   max-width: 60ch;
   margin: 0.9rem 0 0;
+  font-family: "Courier New", ui-monospace, monospace;
   font-size: 1.02rem;
+  color: var(--ink-soft);
 }
 
 .hero,

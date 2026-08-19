@@ -25,6 +25,7 @@ export default function Home() {
         <PhotoSidebar />
 
         <section className="hero" id="about">
+          <h1 className="stamp">Beck Peterson</h1>
           <div className="hero-doodle">
             <Image
               src="/images/bluecat.png"
@@ -35,7 +36,6 @@ export default function Home() {
               priority
             />
           </div>
-          <h1 className="stamp">Beck Peterson</h1>
           <p className="tagline">a little observer in a big universe!</p>
           <p className="hero-intro">
             Studying the human brain to improve our knowledge of artificial intelligence and vice
