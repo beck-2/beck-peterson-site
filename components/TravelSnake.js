@@ -2,7 +2,7 @@
 // ABOUTME: Ported from prototype/field-notes.html; stop markup is React-owned, positioning/scroll-tracking stays imperative.
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const ORDINALS = ["one", "two", "three", "four", "five", "six"];
@@ -121,7 +121,7 @@ export default function TravelSnake() {
 
   // Re-runs on every trip switch: reads the freshly-rendered .stop elements
   // for this trip, builds the snake path, and wires up scroll/resize tracking.
-  useEffect(() => {
+  useLayoutEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wrap = wrapRef.current;
     const svg = svgRef.current;

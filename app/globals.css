@@ -163,7 +163,7 @@ main {
     max-width: 900px;
     display: grid;
     grid-template-columns: minmax(90px, 140px) minmax(0, 720px);
-    grid-template-rows: repeat(8, auto);
+    grid-template-rows: repeat(9, auto);
     column-gap: 2.5rem;
     align-items: start;
   }
@@ -208,6 +208,10 @@ main {
     grid-column: 2;
     grid-row: 8;
   }
+  .site-disclaimer {
+    grid-column: 1 / -1;
+    grid-row: 9;
+  }
 }
 
 .hero {
@@ -240,7 +244,15 @@ main {
   transform: rotate(-0.6deg);
 }
 .hero .tagline {
-  font-size: 1.25rem;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  margin: 0 0 1.5rem;
+}
+.hero-intro {
+  max-width: 60ch;
+  font-size: 1.02rem;
   color: var(--ink-soft);
   margin: 0 0 1.5rem;
 }
@@ -1134,4 +1146,13 @@ footer.site-footer {
 }
 .links a {
   font-size: 0.85rem;
+}
+.site-disclaimer {
+  max-width: 720px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.5rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--accent);
+  text-align: center;
 }

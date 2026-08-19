@@ -36,12 +36,17 @@ export default function Home() {
           </div>
           <h1 className="stamp">Beck Peterson</h1>
           <p className="tagline">a little observer in a big universe!</p>
+          <p className="hero-intro">
+            Studying the human brain to improve our knowledge of artificial intelligence and vice
+            versa. Exploring consciousness with no answers yet — let me know if you have some
+          </p>
           <details className="dropdown">
             <summary>more</summary>
-            <p>
-              Studying the human brain to improve our knowledge of artificial intelligence and vice
-              versa. Exploring consciousness with no answers yet (let me know if you have some!)
-            </p>
+            <p>you thought there would be more? I am but a one dimensional being</p>
+            <details className="dropdown">
+              <summary>more</summary>
+              <p>[more info goes here]</p>
+            </details>
           </details>
         </section>
 
@@ -106,6 +111,10 @@ export default function Home() {
             </a>
           </div>
         </footer>
+
+        <p className="site-disclaimer">
+          I love AI (and I'm scared of it) but all images and words on this website are my own
+        </p>
       </main>
     </>
   );
