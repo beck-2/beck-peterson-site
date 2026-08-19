@@ -7,18 +7,6 @@ import Image from "next/image";
 
 const ORDINALS = ["one", "two", "three", "four", "five", "six"];
 
-function makeStops(tripLabel, count) {
-  const list = [];
-  for (let i = 0; i < count; i++) {
-    list.push({
-      cap: `[photo — ${tripLabel.toLowerCase()} stop ${i + 1}]`,
-      place: `Stop ${ORDINALS[i] || i + 1} · [place]`,
-      desc: "[Beck's description of this trip goes here.]",
-    });
-  }
-  return list;
-}
-
 const SOLO_LOCATIONS = [
   {
     name: "Nettlecombe Court",
@@ -70,25 +58,29 @@ const TRIPS = {
     label: "Solo",
     year: 2026,
     blurb: "I began with the ESPR camp (European Summer Program on Rationality), and wound my way around Europe from friend to friend. ",
+    ready: true,
     stops: SOLO_STOPS,
   },
   volcano: {
     label: "Volcano",
     year: 2026,
     blurb: "Decided to relax with the family for spring break but ended up climbing a volcano. Almost didn't make it out of the hike.",
-    stops: makeStops("Volcano", 2),
+    ready: false,
+    stops: [],
   },
   study: {
     label: "Study",
     year: 2025,
     blurb: "Berlin study abroad, hedonism, discovery, and art. Little hops from my Mitte base to visit friends and castles alike.",
-    stops: makeStops("Study", 4),
+    ready: false,
+    stops: [],
   },
   film: {
     label: "Film",
     year: 2011,
     blurb: "Lived in the middle east for nine months while my parents created a documentary. Only ate chocolate yoghurt and bread.",
-    stops: makeStops("Film", 3),
+    ready: false,
+    stops: [],
   },
 };
 
@@ -270,47 +262,51 @@ export default function TravelSnake() {
         </div>
       </div>
       <p className="trip-blurb">{trip.blurb}</p>
-      <div className="travel-snake" ref={wrapRef}>
-        <div className="plane-track">
-          <svg ref={planeRef} className="plane-icon" width="28" height="28" viewBox="-14 -14 28 28">
+      {trip.ready ? (
+        <div className="travel-snake" ref={wrapRef}>
+          <div className="plane-track">
+            <svg ref={planeRef} className="plane-icon" width="28" height="28" viewBox="-14 -14 28 28">
+              <path
+                d="M0,-11 C1.4,-11 2,-8.6 2,-6.4 L2,-3.6 L9.6,1.8 L9.6,4 L2,1.6 L2,6.6 L4.8,9 L4.8,10.6 L0,9 L-4.8,10.6 L-4.8,9 L-2,6.6 L-2,1.6 L-9.6,4 L-9.6,1.8 L-2,-3.6 L-2,-6.4 C-2,-8.6 -1.4,-11 0,-11 Z"
+                fill="var(--silver)"
+                stroke="var(--ink)"
+                strokeWidth="0.5"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <svg ref={svgRef} className="route">
             <path
-              d="M0,-11 C1.4,-11 2,-8.6 2,-6.4 L2,-3.6 L9.6,1.8 L9.6,4 L2,1.6 L2,6.6 L4.8,9 L4.8,10.6 L0,9 L-4.8,10.6 L-4.8,9 L-2,6.6 L-2,1.6 L-9.6,4 L-9.6,1.8 L-2,-3.6 L-2,-6.4 C-2,-8.6 -1.4,-11 0,-11 Z"
-              fill="var(--silver)"
-              stroke="var(--ink)"
-              strokeWidth="0.5"
-              strokeLinejoin="round"
+              ref={pathRef}
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth="2"
+              strokeDasharray="1 9"
+              strokeLinecap="round"
             />
           </svg>
-        </div>
-        <svg ref={svgRef} className="route">
-          <path
-            ref={pathRef}
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth="2"
-            strokeDasharray="1 9"
-            strokeLinecap="round"
-          />
-        </svg>
-        {trip.stops.map((data, i) => (
-          <div className="stop" key={`${activeKey}-${i}`}>
-            <div className="pin" />
-            <div className="thread" />
-            <div className="polaroid">
-              <div className="frame">
-                {data.image && (
-                  <Image src={data.image} alt={data.place} fill sizes="150px" style={{ objectFit: "cover" }} />
-                )}
+          {trip.stops.map((data, i) => (
+            <div className="stop" key={`${activeKey}-${i}`}>
+              <div className="pin" />
+              <div className="thread" />
+              <div className="polaroid">
+                <div className="frame">
+                  {data.image && (
+                    <Image src={data.image} alt={data.place} fill sizes="150px" style={{ objectFit: "cover" }} />
+                  )}
+                </div>
+                <div className="cap">{data.cap}</div>
               </div>
-              <div className="cap">{data.cap}</div>
+              <div className="text">
+                <div className="place">{data.place}</div>
+                <div className="desc">{data.desc}</div>
+              </div>
             </div>
-            <div className="text">
-              <div className="place">{data.place}</div>
-              <div className="desc">{data.desc}</div>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className="trip-not-ready">oops- Beck hasn&rsquo;t added pics for this trip yet!</p>
+      )}
     </section>
   );
 }
