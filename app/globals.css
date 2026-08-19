@@ -693,11 +693,9 @@ svg.route {
   position: relative;
   flex: none;
   cursor: inherit;
-  transition: transform 0.25s ease;
 }
 .project-card.active {
   z-index: 2;
-  transform: scale(1.12);
 }
 .project-frame {
   position: relative;
@@ -713,12 +711,25 @@ svg.route {
   outline-color: var(--accent);
 }
 /* Each photo keeps its own natural aspect ratio (fixed height, auto width)
-   rather than being cropped into a uniform box — deliberately non-uniform. */
+   rather than being cropped into a uniform box — deliberately non-uniform.
+   The enlarged (active) height is a real size increase, not a CSS transform:
+   transform: scale() is purely visual and doesn't reserve extra layout space,
+   which let an enlarged card's top edge poke above the clipped track viewport
+   and get cut off. A real height change reflows the row (it top-aligns via
+   align-items: flex-start) so the card just grows downward instead. */
 .project-frame img,
 .project-media {
   height: 160px;
   width: auto;
   display: block;
+}
+/* Video only ever renders once a card is already active (see Projects.js),
+   so it can just use the enlarged size directly. The still image renders in
+   both states, so its enlarged height is set inline instead — it already
+   carries an inline style for its base size, which would otherwise override
+   a CSS rule here. */
+.project-media {
+  height: 280px;
 }
 .project-frame-placeholder {
   width: 180px;
@@ -776,9 +787,22 @@ svg.route {
   background: var(--card);
   border: 1px solid var(--line);
 }
+.project-location {
+  margin: 0 0 0.4rem;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+}
 .project-desc {
   margin: 0;
   font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+.project-tech {
+  margin: 0.4rem 0 0;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
   color: var(--ink-soft);
 }
 .project-link {

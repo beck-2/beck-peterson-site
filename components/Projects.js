@@ -20,7 +20,7 @@ function titleFromFilename(filename) {
     .join(" ");
 }
 
-function photoItem(category, file, width, height, type) {
+function photoItem(category, file, width, height, type, extra = {}) {
   const filename = `${file}.jpeg`;
   return {
     title: titleFromFilename(filename),
@@ -29,70 +29,186 @@ function photoItem(category, file, width, height, type) {
     height,
     video: null,
     desc: "[Beck's description of this project goes here.]",
+    location: null,
+    materials: null,
     href: null,
     type: type || "solo",
+    ...extra,
   };
 }
 
-function placeholderItems(count, withLinks) {
-  return Array.from({ length: count }, (_, i) => ({
-    title: `[project ${i + 1}]`,
-    image: null,
-    width: null,
-    height: null,
-    video: null,
-    desc: "[Beck's description of this project goes here.]",
-    href: withLinks ? "#" : null,
-    type: i % 2 === 0 ? "solo" : "collab",
-  }));
+function techItem({ title, image, video, width, height, desc, tech, href, type }) {
+  return { title, image, video, width, height, desc, tech, href, type };
 }
 
 const CATEGORIES = [
-  { key: "tech", label: "tech", items: placeholderItems(4, true) },
+  {
+    key: "tech",
+    label: "tech",
+    items: [
+      techItem({
+        title: "Brain Computer Interface Games",
+        image: "/project_media/tech/eeg-still.jpg",
+        video: "/project_media/tech/eeg.mp4",
+        width: 1920,
+        height: 1080,
+        desc: "made brain-controlled flappy bird and various visualizations of live eeg data",
+        tech: ["Muse 2 EEG Headset", "Brainflow", "Godot"],
+        href: "https://github.com/beck-2/fah_eeg",
+        type: "solo",
+      }),
+      techItem({
+        title: "Desmos Text",
+        image: "/project_media/tech/desmos-still.jpg",
+        video: "/project_media/tech/desmos.mp4",
+        width: 640,
+        height: 416,
+        desc: "uses the desmos interface to create editable text made from equations in the graphing calculator",
+        tech: ["Tampermonkey", "JS"],
+        href: "https://github.com/beck-2/Desmos_Text",
+        type: "solo",
+      }),
+      techItem({
+        title: "RL Maze Agent",
+        image: "/project_media/tech/RL.png",
+        video: null,
+        width: 1153,
+        height: 1184,
+        desc: "trained a Successor State Representation Agent with neural memory to navigate a figure-8 maze",
+        tech: ["Python", "Gymnasium", "MiniGrid"],
+        href: "https://github.com/beck-2/Reinforcement_Learning",
+        type: "collab",
+      }),
+      techItem({
+        title: "UCLA Web Dev",
+        image: "/project_media/tech/Webdev.png",
+        video: null,
+        width: 1276,
+        height: 1176,
+        desc: "redesigned the UCLA Epicenter website for improved engagement and accessibility",
+        tech: ["Figma", "WordPress", "Lighthouse"],
+        href: "https://uclaepicenter.org/",
+        type: "collab",
+      }),
+      techItem({
+        title: "Trebuchet",
+        image: "/project_media/tech/trebuchet-still.jpg",
+        video: "/project_media/tech/trebuchet.mp4",
+        width: 1920,
+        height: 1080,
+        desc: "recreated a medieval weapon in the English countryside",
+        tech: ["Wood", "Handsaws", "Drills", "Patience"],
+        href: null,
+        type: "collab",
+      }),
+    ],
+  },
   {
     key: "sketches",
     label: "sketches",
     items: [
-      photoItem("sketches", "anglerfish", 802, 980),
-      photoItem("sketches", "beach", 768, 1024),
-      photoItem("sketches", "berlin", 768, 1024, "collab"),
-      photoItem("sketches", "birds", 768, 1024),
-      photoItem("sketches", "creature", 3120, 4234),
-      photoItem("sketches", "duo", 1536, 2048, "collab"),
-      photoItem("sketches", "left_hand", 768, 1024),
-      photoItem("sketches", "right_hand", 768, 1024),
-      photoItem("sketches", "meeting", 768, 1024, "collab"),
-      photoItem("sketches", "musee", 1536, 2048),
-      photoItem("sketches", "rollercoaster", 768, 1024),
-      photoItem("sketches", "table", 768, 1024),
-      photoItem("sketches", "world", 768, 1024),
-      photoItem("sketches", "younger", 768, 1024),
+      photoItem("sketches", "anglerfish", 802, 980, "solo", {
+        location: "Dorm room",
+        desc: "deep sea bioluminescence on black paper",
+      }),
+      photoItem("sketches", "beach", 768, 1024, "solo", {
+        title: "Neon",
+        location: "Will Rogers Beach",
+        desc: "played around with the paint pen in my bag to make some funky fish",
+      }),
+      photoItem("sketches", "berlin", 768, 1024, "collab", {
+        location: "Berlin",
+        desc: "drawing class sheltered from the rain in local architecture after copying it onto paper",
+      }),
+      photoItem("sketches", "birds", 768, 1024, "solo", {
+        location: "Berlin Natural History Museum",
+        desc: "explored depth, time pressure, and not caring how messy my lines were",
+      }),
+      photoItem("sketches", "creature", 3120, 4234, "solo", {
+        location: "Dorm room",
+        desc: "created him because he needed to be born",
+      }),
+      photoItem("sketches", "duo", 1536, 2048, "collab", {
+        location: "Park",
+        desc: "teaching my love to draw",
+      }),
+      photoItem("sketches", "left_hand", 768, 1024, "solo", {
+        location: "Indoors",
+        desc: "more fluid than my right hand",
+      }),
+      photoItem("sketches", "right_hand", 768, 1024, "solo", {
+        location: "Indoors",
+        desc: "more accurate than my left hand",
+      }),
+      photoItem("sketches", "meeting", 768, 1024, "collab", {
+        location: "Music cafe",
+        desc: "had my first and last meeting with an artist-engineer-woman where we each drew one half of the notebook",
+      }),
+      photoItem("sketches", "musee", 1536, 2048, "solo", {
+        location: "Paris Petit Palais",
+        desc: "needed to sit down and sketch. Charcoal is unforgiving",
+      }),
+      photoItem("sketches", "rollercoaster", 768, 1024, "solo", {
+        location: "Dorm room",
+        desc: "too bored to complete but lovely lines everywhere",
+      }),
+      photoItem("sketches", "table", 768, 1024, "collab", {
+        location: "Thanksgiving",
+        desc: "one of many table decorations sketched during the feast",
+      }),
+      photoItem("sketches", "world", 768, 1024, "solo", {
+        location: "Dorm room",
+        desc: "I'd like to live here and meet this mythical deer",
+      }),
+      photoItem("sketches", "younger", 768, 1024, "solo", {
+        location: "Dorm room",
+        desc: "recreating what my twin and I looked like more than a decade ago",
+      }),
     ],
   },
   {
     key: "creatures",
     label: "creatures i have picked up",
     items: [
-      photoItem("creatures", "bug", 1536, 2048),
-      photoItem("creatures", "gecko", 828, 934),
-      photoItem("creatures", "lizard", 768, 1024),
-      photoItem("creatures", "sheep", 768, 1024),
-      photoItem("creatures", "shelly", 768, 1024),
-      photoItem("creatures", "snails", 768, 1024),
-      photoItem("creatures", "toad", 862, 912),
-      photoItem("creatures", "turtle", 1182, 665),
+      photoItem("creatures", "bug", 1536, 2048, "collab", { desc: null, location: "Tikal" }),
+      photoItem("creatures", "gecko", 828, 934, "collab", { desc: null, location: "France" }),
+      photoItem("creatures", "lizard", 768, 1024, "collab", { desc: null, location: "Spain" }),
+      photoItem("creatures", "sheep", 768, 1024, "solo", { desc: null, location: "K-town" }),
+      photoItem("creatures", "shelly", 768, 1024, "collab", { desc: null, location: "UCLA dorm" }),
+      photoItem("creatures", "snails", 768, 1024, "solo", { desc: null, location: "Berlin" }),
+      photoItem("creatures", "toad", 862, 912, "solo", { desc: null, location: "Guatemala" }),
+      photoItem("creatures", "turtle", 1182, 665, "solo", { desc: null, location: "Ventana Wilderness" }),
     ],
   },
   {
     key: "creations",
     label: "creations",
     items: [
-      photoItem("creations", "3d_print", 1536, 2048),
-      photoItem("creations", "animals", 1536, 2048),
-      photoItem("creations", "cross_stitch", 768, 1024),
-      photoItem("creations", "jewelry", 1024, 768),
-      photoItem("creations", "kindergarten", 1024, 768, "collab"),
-      photoItem("creations", "watch", 768, 1024),
+      photoItem("creations", "3d_print", 1536, 2048, "solo", {
+        title: "Pokemon Print",
+        materials: ["PLA Filament", "CAD", "Paint"],
+        desc: "gift for my little in BruinAI since he loves Pokemon",
+      }),
+      photoItem("creations", "animals", 1536, 2048, "collab", {
+        materials: ["Felt", "Hot Glue", "Marker"],
+        desc: "thanksgiving placemarkers with everyone's favorite animals",
+      }),
+      photoItem("creations", "cross_stitch", 768, 1024, "solo", {
+        materials: ["Fabric", "Thread"],
+        desc: "my first time trying cross stitch, felt like I was a Jacquard loom",
+      }),
+      photoItem("creations", "jewelry", 1024, 768, "solo", {
+        materials: ["Wire", "Beads", "Pliers"],
+        desc: "made a swirly strong tree to hold my less strong jewelry",
+      }),
+      photoItem("creations", "kindergarten", 1024, 768, "collab", {
+        materials: ["Wood", "Concrete", "Jigsaw", "Pickaxe"],
+        desc: "designed and built a honey-themed kindergarten in the forest of Berlin",
+      }),
+      photoItem("creations", "watch", 768, 1024, "solo", {
+        materials: ["Broken Watches", "Batteries", "Gears"],
+        desc: "repaired my brother's watch collection even though he cares only for the fashion not the time",
+      }),
     ],
   },
 ];
@@ -112,8 +228,7 @@ function TypeDots({ type }) {
   );
 }
 
-function Carousel({ label, items }) {
-  const [activeIndex, setActiveIndex] = useState(null);
+function Carousel({ label, items, activeIndex, onActivate }) {
   const [detailsPos, setDetailsPos] = useState(null);
   const paused = activeIndex !== null;
   const carouselRef = useRef(null);
@@ -152,9 +267,9 @@ function Carousel({ label, items }) {
   }, [paused]);
 
   // Positions the details panel directly under whichever card is active,
-  // measured after React commits the .active class (and its enlarging
-  // transform) — a plain CSS position wouldn't work here since the card
-  // sits inside a horizontally-clipped, drift-scrolled track.
+  // measured after React commits the .active class (and its enlarged size)
+  // — a plain CSS position wouldn't work here since the card sits inside a
+  // horizontally-clipped, drift-scrolled track.
   useEffect(() => {
     if (activeIndex === null) {
       setDetailsPos(null);
@@ -162,17 +277,30 @@ function Carousel({ label, items }) {
     }
     const cardEl = cardRefs.current[activeIndex];
     const carouselEl = carouselRef.current;
-    if (!cardEl || !carouselEl) return;
+    const viewport = viewportRef.current;
+    if (!cardEl || !carouselEl || !viewport) return;
+
+    // If the clicked card was only partly visible, nudge the track just far
+    // enough to bring it fully into view — a small correction rather than
+    // re-centering, so the scroll position doesn't jump more than it needs to.
+    const viewportRect = viewport.getBoundingClientRect();
     const cardRect = cardEl.getBoundingClientRect();
+    if (cardRect.left < viewportRect.left) {
+      viewport.scrollLeft -= viewportRect.left - cardRect.left;
+    } else if (cardRect.right > viewportRect.right) {
+      viewport.scrollLeft += cardRect.right - viewportRect.right;
+    }
+
+    const settledCardRect = cardEl.getBoundingClientRect();
     const carouselRect = carouselEl.getBoundingClientRect();
     setDetailsPos({
-      left: cardRect.left - carouselRect.left,
-      top: cardRect.bottom - carouselRect.top + 8,
+      left: settledCardRect.left - carouselRect.left,
+      top: settledCardRect.bottom - carouselRect.top + 8,
     });
   }, [activeIndex]);
 
   function toggle(i) {
-    setActiveIndex((prev) => (prev === i ? null : i));
+    onActivate(i);
   }
 
   function advance(direction) {
@@ -241,7 +369,7 @@ function Carousel({ label, items }) {
                         width={item.width}
                         height={item.height}
                         sizes="220px"
-                        style={{ height: "160px", width: "auto" }}
+                        style={{ height: isActive ? "280px" : "160px", width: "auto" }}
                       />
                     ) : (
                       <div className="project-frame-placeholder" />
@@ -270,7 +398,11 @@ function Carousel({ label, items }) {
           <p className={"project-type-label" + (activeItem.type === "collab" ? " collab" : " solo")}>
             {activeItem.type === "collab" ? "collaboration" : "solo"}
           </p>
-          <p className="project-desc">{activeItem.desc}</p>
+          {activeItem.location && <p className="project-location">{activeItem.location}</p>}
+          {activeItem.desc && <p className="project-desc">{activeItem.desc}</p>}
+          {(activeItem.tech || activeItem.materials) && (
+            <p className="project-tech">{(activeItem.tech || activeItem.materials).join(" · ")}</p>
+          )}
           {activeItem.href && (
             <a href={activeItem.href} target="_blank" rel="noopener noreferrer" className="project-link">
               view →
@@ -283,6 +415,11 @@ function Carousel({ label, items }) {
 }
 
 export default function Projects() {
+  // Lifted above the individual carousels so activating a card in one
+  // carousel can clear whatever was active in another — each Carousel only
+  // knows its own slice of this state, not its siblings.
+  const [active, setActive] = useState(null); // { key, index } | null
+
   return (
     <section className="block" id="projects">
       <div className="section-head">
@@ -295,7 +432,17 @@ export default function Projects() {
         </span>
       </div>
       {CATEGORIES.map((cat) => (
-        <Carousel key={cat.key} label={cat.label} items={cat.items} />
+        <Carousel
+          key={cat.key}
+          label={cat.label}
+          items={cat.items}
+          activeIndex={active?.key === cat.key ? active.index : null}
+          onActivate={(index) =>
+            setActive((prev) =>
+              prev && prev.key === cat.key && prev.index === index ? null : { key: cat.key, index }
+            )
+          }
+        />
       ))}
     </section>
   );
