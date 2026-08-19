@@ -1,24 +1,21 @@
-// ABOUTME: Generates /robots.txt — search engines are welcome, known AI-training
-// ABOUTME: crawlers are asked not to scrape. Voluntary by nature; well-behaved bots only.
+// ABOUTME: Generates /robots.txt — search engines and on-demand AI agents (the kind that
+// ABOUTME: fetch a page because a user asked about it) are welcome; bulk AI-training crawlers are not.
 export default function robots() {
   return {
     rules: [
       { userAgent: "*", allow: "/" },
       {
+        // Crawlers whose stated purpose is harvesting content for model training
+        // (as opposed to live retrieval on behalf of a user's own request).
         userAgent: [
           "GPTBot",
-          "ChatGPT-User",
-          "OAI-SearchBot",
           "ClaudeBot",
-          "Claude-Web",
           "anthropic-ai",
           "CCBot",
           "Google-Extended",
           "Applebot-Extended",
           "Bytespider",
-          "PerplexityBot",
           "Meta-ExternalAgent",
-          "Meta-ExternalFetcher",
           "Diffbot",
           "Timpibot",
           "YouBot",

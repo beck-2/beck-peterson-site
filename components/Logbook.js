@@ -58,7 +58,10 @@ export default function Logbook() {
         setIsAdmin(payload.isAdmin);
         setStatus("idle");
       })
-      .catch(() => setStatus("error"));
+      .catch((err) => {
+        console.error("Failed to load the logbook:", err);
+        setStatus("error");
+      });
   }, []);
 
   // The feed shows exactly VISIBLE_ENTRIES_BEFORE_SCROLL entries before it scrolls.
@@ -212,6 +215,10 @@ export default function Logbook() {
     if (res.ok) {
       setEntries((prev) => prev.filter((e) => e.id !== id));
     }
+  }
+
+  if (status === "error") {
+    return <p className="quiet-note frog-error">couldn&rsquo;t load the logbook — try refreshing.</p>;
   }
 
   if (status === "loading" || !entries) {

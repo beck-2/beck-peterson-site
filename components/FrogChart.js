@@ -18,7 +18,10 @@ export default function FrogChart() {
         if (payload.ownValue !== null) setInputValue(String(payload.ownValue));
         setStatus("idle");
       })
-      .catch(() => setStatus("error"));
+      .catch((err) => {
+        console.error("Failed to load the frog chart:", err);
+        setStatus("error");
+      });
   }, []);
 
   async function handleSubmit(e) {
@@ -43,6 +46,10 @@ export default function FrogChart() {
       setError("Couldn't reach the server — try again.");
       setStatus("idle");
     }
+  }
+
+  if (status === "error") {
+    return <p className="quiet-note frog-error">couldn&rsquo;t load the frog chart — try refreshing.</p>;
   }
 
   if (status === "loading" || !data) {
