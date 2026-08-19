@@ -323,6 +323,15 @@ main {
      the full section width. */
   transform: translateX(-60px);
 }
+@container hero (max-width: 600px) {
+  /* The -60px shift only makes sense centered against the doodle above —
+     with the doodle hidden here (see the other rule under this same query),
+     it just pushed the tagline off-screen. Must come after the unqualified
+     .hero .tagline rule above: equal specificity, so source order decides. */
+  .hero .tagline {
+    transform: none;
+  }
+}
 .hero-intro {
   max-width: 60ch;
   font-family: "Courier New", ui-monospace, monospace;
@@ -333,6 +342,22 @@ main {
 details.dropdown {
   border-top: 1px dashed var(--line);
   padding-top: 1rem;
+}
+.hero-more-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px dashed var(--line);
+  padding-top: 1rem;
+}
+.hero-more-row .dropdown-outer {
+  border-top: none;
+  padding-top: 0;
+}
+.hero-more-row .links {
+  flex: none;
+  padding-top: 0.15rem;
 }
 details.dropdown summary {
   cursor: inherit;

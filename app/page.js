@@ -41,14 +41,28 @@ export default function Home() {
             Studying the human brain to improve our knowledge of artificial intelligence and vice
             versa. Exploring consciousness with no answers yet — let me know if you have some
           </p>
-          <details className="dropdown">
-            <summary>more</summary>
-            <p>you thought there would be more? I am but a one dimensional being</p>
-            <details className="dropdown">
+          <div className="hero-more-row">
+            <details className="dropdown dropdown-outer">
               <summary>more</summary>
-              <p>[more info goes here]</p>
+              <p>you thought there would be more? I am but a one dimensional being</p>
+              <details className="dropdown">
+                <summary>more</summary>
+                <p>[more info goes here]</p>
+              </details>
             </details>
-          </details>
+            <div className="links">
+              <a href="https://github.com/beck-2" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/beckjpeterson/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </section>
 
         <Projects />
@@ -91,18 +105,6 @@ export default function Home() {
           <a href="mailto:beckjpeterson@gmail.com" className="contact-box">
             send me a note: beckjpeterson@gmail.com
           </a>
-          <div className="links">
-            <a href="https://github.com/beck-2" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/beckjpeterson/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              LinkedIn
-            </a>
-          </div>
         </footer>
 
         <p className="site-disclaimer">
