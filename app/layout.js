@@ -7,9 +7,26 @@ export const metadata = {
   description: "A little observer of a big universe.",
 };
 
+// Runs before first paint so an explicit light/dark choice from a previous
+// visit applies immediately — otherwise the page would flash the OS-default
+// theme before ThemeToggle's own effect could catch up.
+const THEME_INIT_SCRIPT = `
+(function () {
+  try {
+    var stored = localStorage.getItem("theme");
+    if (stored === "dark" || stored === "light") {
+      document.documentElement.setAttribute("data-theme", stored);
+    }
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );

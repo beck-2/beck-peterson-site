@@ -1,4 +1,6 @@
 // ABOUTME: Site navigation bar, sticky at the top of every page.
+import ThemeToggle from "@/components/ThemeToggle";
+
 export default function Nav() {
   return (
     <header className="site-header">
@@ -11,6 +13,7 @@ export default function Nav() {
         <a href="#stats">stats</a>
         <a href="#facts">fun links</a>
         <a href="#contact">contact</a>
+        <ThemeToggle />
       </nav>
     </header>
   );

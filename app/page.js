@@ -7,6 +7,7 @@ import TravelSnake from "@/components/TravelSnake";
 import Favorites from "@/components/Favorites";
 import Logbook from "@/components/Logbook";
 import PhotoSidebar from "@/components/PhotoSidebar";
+import Projects from "@/components/Projects";
 
 const FUN_FACTS = [
   { label: "randomness", href: "https://www.random.org/analysis/" },
@@ -50,12 +51,7 @@ export default function Home() {
           </details>
         </section>
 
-        <section className="block" id="projects">
-          <div className="section-head">
-            <h2 className="stamp">projects</h2>
-          </div>
-          <p className="quiet-note">[GitHub projects and physical art land here.]</p>
-        </section>
+        <Projects />
 
         <TravelSnake />
 
