@@ -120,12 +120,34 @@ main {
   display: none;
 }
 .photo-placeholder {
+  position: relative;
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: 1px dashed var(--line);
+  overflow: hidden;
+  border: 1px solid var(--line);
   background: var(--card);
   flex: none;
+}
+.photo-sidebar-callout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+  color: var(--accent);
+  text-align: center;
+}
+.photo-sidebar-callout-text {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.35;
+}
+.photo-sidebar-callout-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
 }
 .logbook-slot {
   margin-bottom: 4.5rem;
@@ -147,6 +169,7 @@ main {
   .photo-sidebar {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
     grid-column: 1;
     grid-row: 1 / -1;
@@ -580,6 +603,36 @@ svg.route {
   background: repeating-linear-gradient(45deg, #b9b0a0, #b9b0a0 6px, #a89e8c 6px, #a89e8c 12px);
 }
 .poster-cap {
+  display: block;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.cat-jumble {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 1.25rem;
+}
+.cat-portrait {
+  flex: none;
+  width: 110px;
+  text-align: center;
+}
+.cat-portrait-frame {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  /* Fixed tan rather than var(--card): these are real photos, so the mat
+     behind them shouldn't invert to near-black in dark mode. */
+  background: #f8f3e5;
+  border: 1px solid var(--line);
+}
+.cat-portrait-cap {
   display: block;
   margin-top: 6px;
   text-align: center;

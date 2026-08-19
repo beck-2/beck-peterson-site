@@ -34,6 +34,15 @@ const RECIPES = [
   { title: "[recipe title]", body: "[Beck's recipe goes here — ingredients, steps, notes.]" },
 ];
 
+const CATS = [
+  // Flash's photo is a JPEG with an opaque white background baked in (unlike
+  // Sansa/Jewel's transparent PNGs), so it needs a blend mode to pick up the
+  // frame's tan tint instead of showing flat white.
+  { name: "Flash", src: "/images/cats/flash.jpeg", rotation: -3, whiteBg: true },
+  { name: "Sansa", src: "/images/cats/sansa.png", rotation: 2.5 },
+  { name: "Jewel", src: "/images/cats/jewel.png", rotation: -1.5 },
+];
+
 const LINKS = {
   goodreads: "https://www.goodreads.com/user/show/193950155-beck",
   letterboxd: "https://letterboxd.com/_beck/",
@@ -241,6 +250,28 @@ export default function Favorites() {
             </span>
           </span>
         </button>
+      </div>
+
+      <div className="favorites-group">
+        <div className="favorites-group-head">
+          <span className="mono-label">my children</span>
+        </div>
+        <div className="cat-jumble">
+          {CATS.map((cat, i) => (
+            <div className="cat-portrait" key={i} style={{ transform: `rotate(${cat.rotation}deg)` }}>
+              <div className="cat-portrait-frame">
+                <Image
+                  src={cat.src}
+                  alt={cat.name}
+                  fill
+                  sizes="120px"
+                  style={{ objectFit: "cover", mixBlendMode: cat.whiteBg ? "multiply" : undefined }}
+                />
+              </div>
+              <div className="cat-portrait-cap">{cat.name}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
