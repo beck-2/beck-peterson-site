@@ -3,27 +3,74 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
-const ORDINALS = ["one", "two", "three", "four", "five"];
+const ORDINALS = ["one", "two", "three", "four", "five", "six"];
 
 function makeStops(tripLabel, count) {
   const list = [];
   for (let i = 0; i < count; i++) {
     list.push({
       cap: `[photo — ${tripLabel.toLowerCase()} stop ${i + 1}]`,
-      place: `Stop ${ORDINALS[i] || i + 1} · [place, year]`,
+      place: `Stop ${ORDINALS[i] || i + 1} · [place]`,
       desc: "[Beck's description of this trip goes here.]",
     });
   }
   return list;
 }
 
+const SOLO_LOCATIONS = [
+  {
+    name: "Nettlecombe Court",
+    cap: "home for ten days",
+    image: "/images/travel/nettlecombe.jpg",
+    desc: "Lots of boggling gadgets and gizmos. Solved fewer puzzles than I encountered, drank glitter tea, ate way too much chocolate, buzzberries, and miraculin, and stayed up way too late talking to incredible people. Poured olive oil in my ear to evacuate a bug.",
+  },
+  {
+    name: "Milano",
+    cap: "the duomo isn't done",
+    image: "/images/travel/milan.jpg",
+    desc: "I love public transit and architecture and pasta. Unfortunately, I do not love 100 degree (35 degree!) heat, which plagued me for the rest of my journey. Searched far and wide for a hugo spritz as an apertivo before giving up and settling for aperol.",
+  },
+  {
+    name: "Venice",
+    cap: "swirly shadows",
+    image: "/images/travel/venice.jpg",
+    desc: "Tourist town that holds up surprisingly well off the tourist tracks. I ended up ordering much mysterious seafood with my paltry Italian. These marvels will eventually be subsumed, and I am part of the reason why.",
+  },
+  {
+    name: "Slovenia",
+    cap: "I can't do Bled justice",
+    image: "/images/travel/bled.jpg",
+    desc: "Straight out of a storybook but a little fake for that very reason. Much of Ljubljana was constructed by the same architect in the early 1900s to appear older than it really is. I escaped for a few hours to lake Bled, unrivaled as the most beautiful island-in-a-forest-in-my-opinion.",
+  },
+  {
+    name: "Serbia",
+    cap: "eclipse (from fortress)",
+    image: "/images/travel/serbia.jpg",
+    desc: "Arrived by bus at 3:43AM to discover I had no internet service. Became acquainted with the wonders of Serbian meat pastries, free public transit, and the power of their student-driven protests. Probably inhaled enough second-hand smoke to scratch me off the lung donor list.",
+  },
+  {
+    name: "Paris",
+    cap: "I imitate art",
+    image: "/images/travel/paris.jpg",
+    desc: "Pro: I sound like I can speak french\nCon: I cannot in fact speak french (my vocabulary has set sail for better people's minds)\nStopped by a record low of one museum and a record high of 6 hours by the Seine.",
+  },
+];
+
+const SOLO_STOPS = SOLO_LOCATIONS.map((loc, i) => ({
+  cap: loc.cap,
+  place: `Stop ${ORDINALS[i]} · ${loc.name}`,
+  desc: loc.desc,
+  image: loc.image,
+}));
+
 const TRIPS = {
   solo: {
     label: "Solo",
     year: 2026,
     blurb: "I began with the ESPR camp (European Summer Program on Rationality), and wound my way around Europe from friend to friend. ",
-    stops: makeStops("Solo", 5),
+    stops: SOLO_STOPS,
   },
   volcano: {
     label: "Volcano",
@@ -250,7 +297,11 @@ export default function TravelSnake() {
             <div className="pin" />
             <div className="thread" />
             <div className="polaroid">
-              <div className="frame" />
+              <div className="frame">
+                {data.image && (
+                  <Image src={data.image} alt={data.place} fill sizes="150px" style={{ objectFit: "cover" }} />
+                )}
+              </div>
               <div className="cap">{data.cap}</div>
             </div>
             <div className="text">

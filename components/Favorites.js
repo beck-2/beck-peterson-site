@@ -5,6 +5,20 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
+// Same family of muted tones as the Logbook's drawing-pad palette, reused
+// here so the bookshelf reads as colorful spines instead of flat paper.
+const SPINE_COLORS = [
+  "#b5533c", // rust
+  "#3f7d7a", // teal
+  "#c99a2e", // mustard
+  "#5c7a4b", // moss
+  "#c96a83", // rose
+  "#3f5f7a", // denim
+  "#6b4a7a", // plum
+  "#b4863a", // brass
+  "#6b6b6b", // slate
+];
+
 // Sized so ten spines + gaps roughly fill the shelf's width, tall enough for
 // each title to fit the bigger spine text without truncating. Index 5 is the
 // one Beck's currently reading, marked with an arrow (no more leaning).
@@ -19,7 +33,7 @@ const BOOKS = [
   { title: "Educated", width: 68, height: 178 },
   { title: "The Silent Patient", width: 60, height: 238 },
   { title: "Death Valley", width: 64, height: 180 },
-];
+].map((book, i) => ({ ...book, color: SPINE_COLORS[i % SPINE_COLORS.length] }));
 
 const MOVIES = [
   { title: "Jujutsu Kaisen", src: "/images/posters/jujutsu-kaisen-0.png", rotation: -3 },
@@ -207,7 +221,14 @@ export default function Favorites() {
                   <span className="book-marker-glyph">↓</span>
                 </div>
               )}
-              <div className="book-spine" style={{ width: book.width, height: book.height }}>
+              <div
+                className="book-spine"
+                style={{
+                  width: book.width,
+                  height: book.height,
+                  background: `color-mix(in srgb, ${book.color} 38%, var(--card))`,
+                }}
+              >
                 <span className="book-spine-label">{book.title}</span>
               </div>
             </div>

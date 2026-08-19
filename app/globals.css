@@ -408,8 +408,10 @@ svg.route {
   }
 }
 .polaroid .frame {
+  position: relative;
   width: 100%;
   aspect-ratio: 1/1;
+  overflow: hidden;
   background: repeating-linear-gradient(45deg, #b9b0a0, #b9b0a0 6px, #a89e8c 6px, #a89e8c 12px);
 }
 .polaroid .cap {
@@ -457,6 +459,7 @@ svg.route {
   color: var(--ink-soft);
   font-size: 0.9rem;
   max-width: 30ch;
+  white-space: pre-wrap;
   transition: opacity 0.2s ease;
   opacity: 0.75;
 }
@@ -539,17 +542,28 @@ svg.route {
   position: relative;
   flex: none;
   border: 1px solid var(--line);
-  background: var(--card);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  box-shadow:
+    inset -3px 0 6px rgba(0, 0, 0, 0.14),
+    inset 2px 0 0 rgba(255, 255, 255, 0.3);
 }
-.book-spine-col:nth-child(3n + 1) .book-spine {
-  background: var(--paper-alt);
+.book-spine::before,
+.book-spine::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(43, 38, 32, 0.2);
 }
-.book-spine-col:nth-child(3n + 2) .book-spine {
-  background: color-mix(in srgb, var(--accent) 22%, var(--card));
+.book-spine::before {
+  top: 12px;
+}
+.book-spine::after {
+  bottom: 12px;
 }
 .book-spine-label {
   writing-mode: vertical-rl;
@@ -559,8 +573,11 @@ svg.route {
   text-overflow: ellipsis;
   max-height: calc(100% - 16px);
   font-family: "Courier New", ui-monospace, monospace;
-  font-size: 0.72rem;
-  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink);
+  position: relative;
+  z-index: 1;
 }
 .book-marker {
   position: absolute;
