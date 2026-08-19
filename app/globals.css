@@ -8,6 +8,8 @@
   --ink-soft: #5a5240;
   --accent: #d98a9b;
   --brass: #b4863a;
+  --silver: #9a9ea3;
+  --silver-highlight: #e6e8ea;
   --line: rgba(43, 38, 32, 0.2);
   --card: #f8f3e5;
 }
@@ -20,6 +22,8 @@
     --ink-soft: #b9ad8e;
     --accent: #e9a9b8;
     --brass: #d9a94b;
+    --silver: #b9bdc2;
+    --silver-highlight: #f2f3f4;
     --line: rgba(237, 227, 204, 0.22);
     --card: #2b2419;
   }
@@ -112,6 +116,81 @@ main {
   padding: 3rem 1.5rem 6rem;
 }
 
+.photo-sidebar {
+  display: none;
+}
+.photo-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px dashed var(--line);
+  background: var(--card);
+  flex: none;
+}
+.logbook-slot {
+  margin-bottom: 4.5rem;
+}
+
+/* Wide windows (wider than tall, e.g. a maximized desktop window) switch to a
+   three-column layout: a photo sidebar, the normal single-column content, and
+   the Logbook as a persistent right sidebar. min-width guards against tiny
+   landscape phones, where three columns wouldn't have room to breathe. */
+@media (orientation: landscape) and (min-width: 900px) {
+  main.page-grid {
+    max-width: 1240px;
+    display: grid;
+    grid-template-columns: minmax(90px, 120px) minmax(0, 720px) minmax(240px, 340px);
+    grid-template-rows: repeat(7, auto);
+    column-gap: 2.5rem;
+    align-items: start;
+  }
+  .photo-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    grid-column: 1;
+    grid-row: 1 / -1;
+    padding-top: 0.5rem;
+  }
+  .logbook-slot {
+    grid-column: 3;
+    grid-row: 1 / -1;
+    margin-bottom: 0;
+  }
+  .logbook-slot .logbook-feed {
+    max-height: none !important;
+    overflow: visible;
+  }
+  #about {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  #projects {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  #travel {
+    grid-column: 2;
+    grid-row: 3;
+  }
+  #favorites {
+    grid-column: 2;
+    grid-row: 4;
+  }
+  #stats {
+    grid-column: 2;
+    grid-row: 5;
+  }
+  #facts {
+    grid-column: 2;
+    grid-row: 6;
+  }
+  #contact {
+    grid-column: 2;
+    grid-row: 7;
+  }
+}
+
 .hero {
   position: relative;
   text-align: left;
@@ -169,6 +248,11 @@ details.dropdown p {
   font-size: 1.02rem;
 }
 
+.hero,
+section.block,
+footer.site-footer {
+  scroll-margin-top: 80px;
+}
 section.block {
   margin-bottom: 4.5rem;
 }
@@ -272,7 +356,7 @@ svg.route {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #e6b95c, var(--brass) 65%);
+  background: radial-gradient(circle at 35% 30%, var(--silver-highlight), var(--silver) 65%);
   flex: none;
 }
 .thread {
@@ -737,6 +821,200 @@ svg.route {
   color: var(--accent);
   font-size: 0.85rem;
   margin-top: 0.6rem;
+}
+
+.logbook {
+  margin-top: 1.75rem;
+  max-width: 480px;
+}
+.logbook-eyebrow {
+  margin: 0 0 1rem;
+}
+.logbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+.logbook-form input[type="text"],
+.logbook-form textarea {
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+}
+.logbook-canvas-wrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.logbook-canvas {
+  width: 140px;
+  height: 140px;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+}
+.logbook-canvas-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 140px;
+}
+.logbook-colors {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+}
+.logbook-color {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  padding: 0;
+  cursor: inherit;
+}
+.logbook-color.active {
+  box-shadow: 0 0 0 2px var(--paper), 0 0 0 3px var(--ink);
+}
+.logbook-canvas-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.logbook-clear {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  padding: 0.35rem 0.6rem;
+  cursor: inherit;
+}
+.logbook-post {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: inherit;
+}
+.logbook-post:disabled {
+  opacity: 0.6;
+  cursor: inherit;
+}
+.logbook-feed {
+  margin-top: 1.25rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding-right: 0.4rem;
+  scrollbar-color: var(--accent) transparent;
+}
+.logbook-feed::-webkit-scrollbar {
+  width: 10px;
+}
+.logbook-feed::-webkit-scrollbar-track {
+  background: transparent;
+}
+.logbook-feed::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 5px;
+}
+.logbook-entry {
+  position: relative;
+  border: 1px solid var(--line);
+  background: var(--card);
+  padding: 0.75rem 0.9rem;
+}
+.logbook-entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+.logbook-entry-message {
+  margin: 0;
+  font-size: 0.92rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.logbook-entry-drawing {
+  display: block;
+  margin-top: 0.6rem;
+  width: 120px;
+  height: 120px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.logbook-delete {
+  margin-top: 0.6rem;
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--accent);
+  padding: 0.3rem 0.55rem;
+  cursor: inherit;
+}
+.logbook-admin {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+.logbook-admin-toggle {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  opacity: 0.6;
+  cursor: inherit;
+  padding: 0.2rem;
+}
+.logbook-login {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.logbook-login input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+}
+.logbook-login button {
+  font-family: "Courier New", ui-monospace, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  background: var(--accent);
+  color: var(--paper);
+  border: none;
+  padding: 0.35rem 0.7rem;
+  cursor: inherit;
 }
 
 footer.site-footer {

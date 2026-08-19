@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import FrogChart from "@/components/FrogChart";
 import TravelSnake from "@/components/TravelSnake";
 import Favorites from "@/components/Favorites";
+import Logbook from "@/components/Logbook";
 
 const FUN_FACTS = [
   { label: "randomness", href: "https://www.random.org/analysis/" },
@@ -14,11 +15,19 @@ const FUN_FACTS = [
   { label: "qualia", href: "https://qri.org/oscilleditor/" },
 ];
 
+const PHOTO_PLACEHOLDER_COUNT = 6;
+
 export default function Home() {
   return (
     <>
       <Nav />
-      <main>
+      <main className="page-grid">
+        <aside className="photo-sidebar" aria-hidden="true">
+          {Array.from({ length: PHOTO_PLACEHOLDER_COUNT }).map((_, i) => (
+            <div className="photo-placeholder" key={i} />
+          ))}
+        </aside>
+
         <section className="hero" id="about">
           <div className="hero-doodle">
             <Image
@@ -58,6 +67,10 @@ export default function Home() {
           </div>
           <FrogChart />
         </section>
+
+        <div className="logbook-slot">
+          <Logbook />
+        </div>
 
         <section className="block" id="facts">
           <div className="section-head">

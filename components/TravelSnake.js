@@ -228,7 +228,7 @@ export default function TravelSnake() {
           <svg ref={planeRef} className="plane-icon" width="28" height="28" viewBox="-14 -14 28 28">
             <path
               d="M0,-11 C1.4,-11 2,-8.6 2,-6.4 L2,-3.6 L9.6,1.8 L9.6,4 L2,1.6 L2,6.6 L4.8,9 L4.8,10.6 L0,9 L-4.8,10.6 L-4.8,9 L-2,6.6 L-2,1.6 L-9.6,4 L-9.6,1.8 L-2,-3.6 L-2,-6.4 C-2,-8.6 -1.4,-11 0,-11 Z"
-              fill="var(--brass)"
+              fill="var(--silver)"
               stroke="var(--ink)"
               strokeWidth="0.5"
               strokeLinejoin="round"

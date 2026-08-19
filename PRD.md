@@ -12,15 +12,15 @@ An indie personal website for Beck Peterson to share with friends and profession
 - **Database:** MongoDB Atlas (free tier to start), accessed from Next.js API routes.
 - **Hosting:** Vercel.
 - **Styling:** HTML/CSS via React components (JSX). Approach (CSS Modules vs. a utility framework) TBD alongside the visual design decision below.
-- **Media:** binary assets (images, inspo) are never stored in Mongo — a dedicated `/media` folder in the repo holds images Beck drops in directly; user-generated content (e.g. guestbook drawings) goes to an object store (e.g. Cloudinary/S3), not the database.
+- **Media:** binary assets (images, inspo) are never stored in Mongo — a dedicated `/media` folder in the repo holds images Beck drops in directly. Exception: Logbook drawings, which are small (capped, canvas-sourced PNGs) and stored inline as data URLs in MongoDB rather than in a separate object store — simpler for a personal site at this scale, revisit if drawings get larger or more numerous than Mongo's document size comfortably allows.
 
 ### Security baseline (nothing exotic, just fundamentals)
 
 - Parameterized/ODM queries (Mongoose) — no raw string-built Mongo queries, avoids injection.
-- Input validation + sanitization on every API route, especially the guestbook (free-text + drawing submissions are the main untrusted-input surface).
-- Rate limiting / basic spam protection (e.g. honeypot field or lightweight CAPTCHA) on the guestbook and contact form.
+- Input validation + sanitization on every API route, especially the Logbook (free-text + drawing submissions are the main untrusted-input surface).
+- Rate limiting / basic spam protection (e.g. honeypot field or lightweight CAPTCHA) on the Logbook and contact form.
 - Env vars (DB connection string, admin credentials, email service keys) via Vercel's env var dashboard, never committed.
-- Admin-only guestbook deletion gated behind real auth, not a hidden URL.
+- Admin-only Logbook deletion gated behind real auth, not a hidden URL.
 - CORS locked to the site's own origin (relevant mainly if the API is ever called from elsewhere).
 - Helmet-equivalent security headers via Next.js config.
 
@@ -50,7 +50,7 @@ Side-by-side collections, each linked out to the tracker Beck actually uses for 
 - **Recipes:** a little flip-through recipe notebook Beck keeps adding to over time, linked to Beli. Styled as a stack — a couple of pages visibly peek out behind the front one — and clicking the page advances to the next recipe.
 
 ### Stats
-A visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below. (The Hevy-links placeholder was removed; revisit if/when there's a tracker to link here.)
+A visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below. (The Hevy-links placeholder was removed; revisit if/when there's a tracker to link here.) Also holds the Logbook (see below), which lives inside this section rather than as a separate page-level sidebar.
 
 ### Thoughts
 A blog section. Paused/removed from the live nav and page for now — no posts ready yet. Bring it back once Beck has something to put there.
@@ -58,8 +58,8 @@ A blog section. Paused/removed from the live nav and page for now — no posts r
 ### Contact
 A direct-send email box (still a placeholder — the real send-on-submit form is a future feature), plus real links: clicking "Email" opens a draft to beckjpeterson@gmail.com via `mailto:`, and GitHub/LinkedIn are hyperlinked to Beck's real profiles.
 
-### Guestbook
-Visitors leave a short message and/or drawing. Visible as a scrollable feed, styled as a sidebar. Admin (Beck) can delete any entry at any time.
+### Logbook (formerly "Guestbook")
+Visitors leave a short message and/or a small drawing, with an optional name field; each entry shows its post date. Rendered as a scrollable feed inside the Stats section, newest first. Admin (Beck) can take down any entry at any time. Real feature, implemented — see below.
 
 ## Process
 
@@ -73,7 +73,7 @@ Visitors leave a short message and/or drawing. Visible as a scrollable feed, sty
 
 ## Real App — Started
 
-The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects is still a placeholder shell ported from the prototype — About, Travel, fun links, Favorites, and the Stats/frog-chart feature are real (Favorites' songs/recipes still hold placeholder content; books/movies are real).
+The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects is still a placeholder shell ported from the prototype — About, Travel, fun links, Favorites, and the Stats/frog-chart/Logbook feature are real (Favorites' songs/recipes still hold placeholder content; books/movies are real).
 
 Page order: About, Projects, Travel, Favorites, Stats, fun links, Contact. Thoughts is paused/removed for now (no posts ready). Nav labels are all lowercase (matches the lowercase section headings), except the "Beck Peterson" name/logo itself.
 
@@ -88,8 +88,13 @@ Page order: About, Projects, Travel, Favorites, Stats, fun links, Contact. Thoug
 - **Rate limiting (best-effort, no external service):** a 3-second cooldown between edits from the same session, plus a per-IP cap of 20 new (not-yet-existing) sessions per hour to blunt cookie-clearing abuse. Both live in MongoDB rather than in-memory, since Vercel serverless functions don't share memory reliably across invocations.
 - **Local dev:** if `MONGODB_URI` isn't set, `lib/mongodb.js` falls back to an in-memory MongoDB (`mongodb-memory-server`) automatically — nothing to configure to start hacking, but data doesn't persist across dev server restarts. Production requires a real `MONGODB_URI` (see `.env.local.example`).
 
+**Logbook** (`components/Logbook.js`, `app/api/logbook/route.js`, `app/api/logbook/[id]/route.js`, `models/LogbookEntry.js`): a scrollable, newest-first feed of visitor entries (optional name, optional short message, optional small canvas drawing — at least one of message/drawing is required). Sits inside the Stats section, styled to match the frog chart.
+
+- **Drawing input:** a plain `<canvas>` mouse/touch pad; on submit it's exported to a PNG data URL. The server only accepts values with the exact `data:image/png;base64,` prefix and a bounded length, as defense-in-depth against a mismatched/malicious payload.
+- **No visitor identity:** unlike the frog chart, entries aren't tied to a per-visitor cookie — anyone can post any number of entries subject to the IP rate limit below (a "message board," not a "one answer per person" input).
+- **Rate limiting:** per-IP cap (8 new entries/hour), enforced via a MongoDB count query rather than in-memory state, matching the frog chart's approach.
+- **Admin auth:** stateless — no sessions collection. `lib/adminAuth.js` checks a submitted password against the `ADMIN_PASSWORD` env var (`crypto.timingSafeEqual`, so it's not vulnerable to a timing attack) and, on success, issues a signed `expiry.hmac-signature` token (`crypto.createHmac`) stored in an httpOnly cookie. A request is treated as admin iff the signature and expiry both check out — no database lookup needed. `ADMIN_PASSWORD` doubles as the HMAC signing secret, an acceptable simplification for a single-admin personal site.
+
 ## Open Decisions
 
 - CSS approach: CSS Modules / plain CSS vs. a utility framework — to be settled once more of the site is ported over.
-- Guestbook drawing input mechanism (canvas-based sketch vs. simple markup) and storage target.
-- Porting the Guestbook sidebar into a real React component (still prototype-only).
