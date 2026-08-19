@@ -1,6 +1,18 @@
 /* ABOUTME: Global design tokens and base styles for the site.
    ABOUTME: Ported from the Field Notes prototype (prototype/field-notes.html) so the real app matches it. */
 
+/* Self-hosted per Fontshare's ITF Free Font License, which explicitly
+   permits and recommends self-hosting. License copy: public/fonts/boxing/LICENSE.txt */
+@font-face {
+  font-family: "Boxing";
+  src:
+    url("/fonts/boxing/Boxing-Regular.woff2") format("woff2"),
+    url("/fonts/boxing/Boxing-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --paper: #f3eedf;
   --paper-alt: #eae2cc;
@@ -64,8 +76,10 @@ a {
 }
 
 .stamp {
-  font-family: Superclarendon, "Bookman Old Style", "URW Bookman", Georgia, serif;
-  font-weight: 700;
+  font-family: "Boxing", Superclarendon, "Bookman Old Style", "URW Bookman", Georgia, serif;
+  /* Boxing is a single-weight display face — its own heavy reverse-contrast
+     serifs already read as bold, so synthetic bolding isn't needed. */
+  font-weight: 400;
   letter-spacing: 0.01em;
 }
 
