@@ -10,7 +10,7 @@ const ABALONE_PHOTOS = Array.from(
   (_, i) => `/images/abalone/abalone-${String(i + 1).padStart(2, "0")}.jpg`
 );
 
-const CIRCLE_SIZE = 64;
+const CIRCLE_SIZE = 96;
 const CIRCLE_GAP = 24; // matches .photo-sidebar's 1.5rem gap
 
 export default function PhotoSidebar() {
@@ -62,7 +62,7 @@ export default function PhotoSidebar() {
               src={src}
               alt={`Macro photo of abalone shell, ${(i % ABALONE_PHOTOS.length) + 1}`}
               fill
-              sizes="64px"
+              sizes="96px"
               style={{ objectFit: "cover" }}
             />
           </div>
