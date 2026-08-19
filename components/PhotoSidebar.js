@@ -21,14 +21,20 @@ export default function PhotoSidebar() {
   // content column (About through Contact), so the pattern reaches the
   // bottom of the page instead of stopping partway. Measured against real
   // DOM heights rather than a guessed count, since Travel's snake path makes
-  // the main column's height vary a lot.
+  // the main column's height vary a lot — and re-measured continuously via
+  // ResizeObserver (not just on window resize), since the page's rendered
+  // height also changes on its own: images loading in, fonts settling,
+  // content elsewhere growing or shrinking. A one-time mount measurement
+  // goes stale every time any of that happens.
   useEffect(() => {
-    function measure() {
-      const about = document.getElementById("about");
-      const contact = document.getElementById("contact");
-      const callout = calloutRef.current;
-      if (!about || !contact || !callout) return;
+    const about = document.getElementById("about");
+    const contact = document.getElementById("contact");
+    const callout = calloutRef.current;
+    if (!about || !contact || !callout) return;
 
+    let frame = null;
+    function measure() {
+      frame = null;
       const mainColumnHeight = contact.getBoundingClientRect().bottom - about.getBoundingClientRect().top;
       const calloutHeight = callout.getBoundingClientRect().height;
       const remaining = mainColumnHeight - calloutHeight - CIRCLE_GAP;
@@ -38,10 +44,20 @@ export default function PhotoSidebar() {
       );
       setCircleCount(count);
     }
+    // Coalesces bursts of resize-observer callbacks (common during CSS
+    // transitions) into a single measurement per frame.
+    function scheduleMeasure() {
+      if (frame === null) frame = requestAnimationFrame(measure);
+    }
 
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    scheduleMeasure();
+    const observer = new ResizeObserver(scheduleMeasure);
+    observer.observe(document.body);
+
+    return () => {
+      observer.disconnect();
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
   }, []);
 
   return (

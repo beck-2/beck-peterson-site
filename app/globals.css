@@ -1366,19 +1366,27 @@ footer.site-footer {
   border-top: 1px dashed var(--line);
   padding-top: 2rem;
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .contact-box {
+  display: block;
   border: 1px solid var(--line);
   padding: 0.75rem 1rem;
   background: var(--card);
   font-family: "Courier New", ui-monospace, monospace;
   font-size: 0.8rem;
   color: var(--ink-soft);
-  max-width: 280px;
+  max-width: 340px;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.contact-box:hover,
+.contact-box:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 .links {
   display: flex;

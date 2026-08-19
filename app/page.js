@@ -88,13 +88,10 @@ export default function Home() {
         </section>
 
         <footer className="site-footer" id="contact">
-          <div className="contact-box">
-            [ send me a note ]
-            <br />
-            &gt; ________________
-          </div>
+          <a href="mailto:beckjpeterson@gmail.com" className="contact-box">
+            send me a note: beckjpeterson@gmail.com
+          </a>
           <div className="links">
-            <a href="mailto:beckjpeterson@gmail.com">Email</a>
             <a href="https://github.com/beck-2" target="_blank" rel="noopener noreferrer">
               GitHub
             </a>
