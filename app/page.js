@@ -1,5 +1,5 @@
 // ABOUTME: The site's single scrolling page — About, Travel, Favorites, and Stats/FrogChart are real;
-// ABOUTME: Projects/Fun Facts/Thoughts are still placeholder shells awaiting real content.
+// ABOUTME: Projects/fun links are still placeholder shells awaiting real content; Thoughts is paused until there are posts.
 import Image from "next/image";
 import Nav from "@/components/Nav";
 import FrogChart from "@/components/FrogChart";
@@ -31,7 +31,7 @@ export default function Home() {
             />
           </div>
           <h1 className="stamp">Beck Peterson</h1>
-          <p className="tagline">A little observer of a big universe.</p>
+          <p className="tagline">a little observer in a big universe!</p>
           <details className="dropdown">
             <summary>more</summary>
             <p>
@@ -43,14 +43,25 @@ export default function Home() {
 
         <section className="block" id="projects">
           <div className="section-head">
-            <h2 className="stamp">Projects</h2>
+            <h2 className="stamp">projects</h2>
           </div>
           <p className="quiet-note">[GitHub projects and physical art land here.]</p>
         </section>
 
+        <TravelSnake />
+
+        <Favorites />
+
+        <section className="block" id="stats">
+          <div className="section-head">
+            <h2 className="stamp">stats</h2>
+          </div>
+          <FrogChart />
+        </section>
+
         <section className="block" id="facts">
           <div className="section-head">
-            <h2 className="stamp">Fun Facts</h2>
+            <h2 className="stamp">fun links</h2>
           </div>
           <div className="jumble">
             {FUN_FACTS.map((fact) => (
@@ -67,25 +78,6 @@ export default function Home() {
           </div>
         </section>
 
-        <TravelSnake />
-
-        <Favorites />
-
-        <section className="block" id="stats">
-          <div className="section-head">
-            <h2 className="stamp">Stats</h2>
-          </div>
-          <p className="quiet-note">[Hevy links land here.]</p>
-          <FrogChart />
-        </section>
-
-        <section className="block" id="thoughts">
-          <div className="section-head">
-            <h2 className="stamp">Thoughts</h2>
-          </div>
-          <p className="quiet-note">[Blog posts land here.]</p>
-        </section>
-
         <footer className="site-footer" id="contact">
           <div className="contact-box">
             [ send me a note ]
@@ -93,10 +85,17 @@ export default function Home() {
             &gt; ________________
           </div>
           <div className="links">
-            <a href="#">[Email]</a>
-            <a href="#">[GitHub]</a>
-            <a href="#">[Goodreads]</a>
-            <a href="#">[More]</a>
+            <a href="mailto:beckjpeterson@gmail.com">Email</a>
+            <a href="https://github.com/beck-2" target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/beckjpeterson/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LinkedIn
+            </a>
           </div>
         </footer>
       </main>

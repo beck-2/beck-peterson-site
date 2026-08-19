@@ -133,7 +133,7 @@ export default function Favorites() {
   return (
     <section className="block" id="favorites">
       <div className="section-head">
-        <h2 className="stamp">Favorites</h2>
+        <h2 className="stamp">favorites</h2>
       </div>
 
       <div className="favorites-group">

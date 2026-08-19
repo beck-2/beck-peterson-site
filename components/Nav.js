@@ -4,14 +4,13 @@ export default function Nav() {
     <header className="site-header">
       <div className="name stamp">Beck Peterson</div>
       <nav>
-        <a href="#about" className="current">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#facts">Fun Facts</a>
-        <a href="#travel">Travel</a>
-        <a href="#favorites">Favorites</a>
-        <a href="#stats">Stats</a>
-        <a href="#thoughts">Thoughts</a>
-        <a href="#contact">Contact</a>
+        <a href="#about" className="current">about</a>
+        <a href="#projects">projects</a>
+        <a href="#travel">travel</a>
+        <a href="#favorites">favorites</a>
+        <a href="#stats">stats</a>
+        <a href="#facts">fun links</a>
+        <a href="#contact">contact</a>
       </nav>
     </header>
   );

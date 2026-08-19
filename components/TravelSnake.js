@@ -205,7 +205,7 @@ export default function TravelSnake() {
   return (
     <section className="block" id="travel">
       <div className="section-head">
-        <h2 className="stamp">Travel</h2>
+        <h2 className="stamp">travel</h2>
         <span className="mono-label">{trip.year}</span>
         <div className="trip-tabs" role="tablist" aria-label="Trips">
           {Object.entries(TRIPS).map(([key, t]) => (

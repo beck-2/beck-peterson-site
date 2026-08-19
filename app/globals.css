@@ -139,7 +139,6 @@ main {
 .hero .tagline {
   font-size: 1.25rem;
   color: var(--ink-soft);
-  font-style: italic;
   margin: 0 0 1.5rem;
 }
 details.dropdown {

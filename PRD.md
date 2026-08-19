@@ -31,13 +31,13 @@ An indie personal website for Beck Peterson to share with friends and profession
 ## Sections
 
 ### About
-Beck Peterson. "A little observer of a big universe." Expandable/dropdown paragraph: "Studying the human brain to improve our knowledge of artificial intelligence and vice versa. Exploring consciousness with no answers yet (let me know if you have some!)"
+Beck Peterson. "a little observer in a big universe!" Expandable/dropdown paragraph: "Studying the human brain to improve our knowledge of artificial intelligence and vice versa. Exploring consciousness with no answers yet (let me know if you have some!)"
 
 ### Travel
-Dropdown/expandable section. A swirly connecting line with an airplane that animates along it as the user scrolls. Stops are in chronological order; each stop is a polaroid-style photo "tacked on" with a digital pushpin, with a short description underneath. Ships with grey image placeholders and placeholder description slots — Beck supplies real photos and writes the text.
+Dropdown/expandable section. A swirly connecting line with an airplane that animates along it as the user scrolls. Stops are in chronological order; each stop is a polaroid-style photo "tacked on" with a digital pushpin, with a short description underneath. Real feature, implemented (four real trips with Beck's own blurbs) — see below.
 
-### Fun Facts
-A loose, jumbled collection of fun facts and links Beck compiles over time. Deliberately not a rigid grid — more of a scattered collection feel.
+### fun links
+A loose, jumbled collection of fun facts and links Beck compiles over time (originally called "Fun Facts," renamed). Deliberately not a rigid grid — more of a scattered collection feel. Real feature: five real hyperlinked picks (randomness, "parachutes don't work," life, isochrone map, qualia).
 
 ### Projects
 Things Beck has created — some link to GitHub, some are physical (e.g. art).
@@ -50,13 +50,13 @@ Side-by-side collections, each linked out to the tracker Beck actually uses for 
 - **Recipes:** a little flip-through recipe notebook Beck keeps adding to over time, linked to Beli. Styled as a stack — a couple of pages visibly peek out behind the front one — and clicking the page advances to the next recipe.
 
 ### Stats
-Links out to Beck's Hevy — a life-tracking dashboard of sorts. Also hosts a visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below.
+A visitor-contributed histogram: "roughly how many frogs have you held?" (Beck's own answer: ~150, shown as a fixed reference marker on the chart, not a submission). Real feature, implemented — see below. (The Hevy-links placeholder was removed; revisit if/when there's a tracker to link here.)
 
 ### Thoughts
-A blog section.
+A blog section. Paused/removed from the live nav and page for now — no posts ready yet. Bring it back once Beck has something to put there.
 
 ### Contact
-A direct-send email box, plus links to wherever else people might want to reach Beck.
+A direct-send email box (still a placeholder — the real send-on-submit form is a future feature), plus real links: clicking "Email" opens a draft to beckjpeterson@gmail.com via `mailto:`, and GitHub/LinkedIn are hyperlinked to Beck's real profiles.
 
 ### Guestbook
 Visitors leave a short message and/or drawing. Visible as a scrollable feed, styled as a sidebar. Admin (Beck) can delete any entry at any time.
@@ -73,9 +73,9 @@ Visitors leave a short message and/or drawing. Visible as a scrollable feed, sty
 
 ## Real App — Started
 
-The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects, Fun Facts, and Thoughts are still placeholder shells ported from the prototype — About, Travel, Favorites, and the Stats/frog-chart feature are real (Favorites' sub-collections currently hold placeholder content pending Beck's real books/movies/songs/recipes).
+The Next.js app now lives at the repo root (`app/`, `components/`, `lib/`, `models/`). Projects is still a placeholder shell ported from the prototype — About, Travel, fun links, Favorites, and the Stats/frog-chart feature are real (Favorites' songs/recipes still hold placeholder content; books/movies are real).
 
-Page order: About, Projects, Fun Facts, Travel, Favorites, Stats, Thoughts, Contact. Favorites sits next to Stats since both are "things Beck tracks elsewhere, shown here."
+Page order: About, Projects, Travel, Favorites, Stats, fun links, Contact. Thoughts is paused/removed for now (no posts ready). Nav labels are all lowercase (matches the lowercase section headings), except the "Beck Peterson" name/logo itself.
 
 **Travel** (`components/TravelSnake.js`): the snake-path/plane/tabs system ported 1:1 from the prototype. Stop markup (pin/thread/polaroid/caption) is rendered declaratively per trip from a `TRIPS` object; the snake path generation, sticky-plane scroll tracking, edge fade, and proximity highlight stay imperative (a `useEffect` keyed on the active trip, operating on refs) since that logic is fundamentally a scroll-linked animation, not view state — rewriting it as declarative React state would risk subtly changing behavior that took many iterations to get right.
 
