@@ -259,7 +259,7 @@ main {
     max-width: 900px;
     display: grid;
     grid-template-columns: minmax(90px, 140px) minmax(0, 720px);
-    grid-template-rows: repeat(9, auto);
+    grid-template-rows: repeat(10, auto);
     column-gap: 2.5rem;
     align-items: start;
   }
@@ -307,6 +307,10 @@ main {
   .site-disclaimer {
     grid-column: 1 / -1;
     grid-row: 9;
+  }
+  .portal-spiral-row {
+    grid-column: 1 / -1;
+    grid-row: 10;
   }
 }
 
@@ -1577,4 +1581,50 @@ footer.site-footer {
   font-family: "Courier New", ui-monospace, monospace;
   color: var(--accent);
   text-align: center;
+}
+
+.portal-spiral-row {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0 0;
+}
+.spiral-link {
+  display: inline-flex;
+  cursor: inherit;
+  transition: transform 0.2s ease;
+}
+.spiral-link:hover,
+.spiral-link:focus-visible {
+  transform: scale(1.1) rotate(8deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spiral-link {
+    transition: none;
+  }
+}
+
+/* Portal page — a self-contained full-bleed screen with its own background,
+   reachable only via the spiral above; nothing from the main page is
+   rendered alongside it. */
+.portal-page {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+.portal-spiral-back {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1;
+}
+.portal-avatar-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--accent);
 }

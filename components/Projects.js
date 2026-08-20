@@ -258,13 +258,20 @@ function Carousel({ label, items, activeIndex, onActivate }) {
       // Wraps regardless of paused/reduced-motion, so a manual arrow nudge
       // past either end always loops instead of hitting a dead stop. A loop
       // rather than one-shot correction, so it also recovers cleanly from
-      // any out-of-range jump larger than a single half-width.
+      // any out-of-range jump larger than a single half-width. Guarded on
+      // halfWidth > 0: if this node gets detached mid-flight (e.g. a route
+      // change unmounts it right as a frame was already scheduled, just
+      // before cancelAnimationFrame takes effect), scrollWidth reads 0 and
+      // `scrollLeft -= 0` would never change anything — an infinite loop
+      // that freezes the tab, not just a cosmetic glitch.
       const halfWidth = viewport.scrollWidth / 2;
-      while (viewport.scrollLeft >= halfWidth) {
-        viewport.scrollLeft -= halfWidth;
-      }
-      while (viewport.scrollLeft < 0) {
-        viewport.scrollLeft += halfWidth;
+      if (halfWidth > 0) {
+        while (viewport.scrollLeft >= halfWidth) {
+          viewport.scrollLeft -= halfWidth;
+        }
+        while (viewport.scrollLeft < 0) {
+          viewport.scrollLeft += halfWidth;
+        }
       }
       lastTime = time;
       frame = requestAnimationFrame(step);

@@ -8,6 +8,7 @@ import Favorites from "@/components/Favorites";
 import Logbook from "@/components/Logbook";
 import PhotoSidebar from "@/components/PhotoSidebar";
 import Projects from "@/components/Projects";
+import Spiral from "@/components/Spiral";
 
 const FUN_FACTS = [
   { label: "randomness", href: "https://www.random.org/analysis/" },
@@ -110,6 +111,10 @@ export default function Home() {
         <p className="site-disclaimer">
           I love AI (and I'm scared of it) but all images and words on this website are my own
         </p>
+
+        <div className="portal-spiral-row">
+          <Spiral href="/portal" size={64} ariaLabel="Enter the portal" />
+        </div>
       </main>
     </>
   );
