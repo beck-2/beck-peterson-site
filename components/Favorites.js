@@ -48,14 +48,17 @@ const RECIPES = [
   {
     title: "Lavender Lemonade",
     body: "harvest fresh lavender and heat on low with sugar and water for a long time. Let it cool... you have created lavender simple syrup! Mix with lemon juice, water, and ice to make lavender lemonade.",
+    image: "/images/recipes/lavender_lemonade.png",
   },
   {
     title: "Frozen Mocha Cheesecake",
     body: "?????? CLASSIFIED ????????\n*ask Beck nicely and she might make it for you*",
+    image: "/images/recipes/cheesecake.png",
   },
   {
     title: "Perfect Sandwich",
     body: "rub a fresh garlic clove on toasted olive foccaccia, then spread with goat cheese, arugala, and prosciutto. Drizzle with olive oil and enjoy your messy repas.",
+    image: "/images/recipes/sandwich.png",
   },
 ];
 
@@ -298,22 +301,35 @@ export default function Favorites() {
             beli →
           </a>
         </div>
-        <button
-          type="button"
-          className="recipe-notebook"
-          onClick={() => setRecipeIndex((i) => (i + 1) % RECIPES.length)}
-          aria-label="Next recipe"
-        >
-          <span className="notebook-page-behind notebook-page-behind-2" />
-          <span className="notebook-page-behind notebook-page-behind-1" />
-          <span className="recipe-page">
-            <span className="recipe-title">{recipe.title}</span>
-            <span className="recipe-body">{recipe.body}</span>
-            <span className="mono-label recipe-page-count">
-              pg. {recipeIndex + 1}/{RECIPES.length}
+        <div className="recipe-row">
+          <button
+            type="button"
+            className="recipe-notebook"
+            onClick={() => setRecipeIndex((i) => (i + 1) % RECIPES.length)}
+            aria-label="Next recipe"
+          >
+            <span className="notebook-page-behind notebook-page-behind-2" />
+            <span className="notebook-page-behind notebook-page-behind-1" />
+            <span className="recipe-page">
+              <span className="recipe-title">{recipe.title}</span>
+              <span className="recipe-body">{recipe.body}</span>
+              <span className="mono-label recipe-page-count">
+                pg. {recipeIndex + 1}/{RECIPES.length}
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+          {recipe.image && (
+            <div className="recipe-photo">
+              <Image
+                src={recipe.image}
+                alt={recipe.title}
+                fill
+                sizes="(max-width: 640px) 150px, 300px"
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="favorites-group">
