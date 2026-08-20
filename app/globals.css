@@ -138,12 +138,17 @@ header.site-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   padding: 1rem 1.5rem;
   background: var(--paper);
   border-bottom: 1px solid var(--line);
 }
 header.site-header .name {
   font-size: 1.1rem;
+  /* Keeps its own natural width instead of yielding it to nav (which wraps
+     internally and would otherwise crowd right up against it on narrow
+     screens, since flex items share the shrink deficit by default). */
+  flex-shrink: 0;
 }
 nav {
   display: flex;
@@ -176,6 +181,29 @@ nav a.current {
 .theme-toggle:hover,
 .theme-toggle:focus-visible {
   color: var(--accent);
+}
+
+/* Below this width there isn't room for the name and a wrapping nav side by
+   side at their normal sizes — both shrink a little, and the nav becomes a
+   fixed 3-column grid (rather than relying on flex-wrap, whose wrap points
+   shift with exact link-text widths) so it reliably reads as
+   about/projects/travel, favorites/stats/fun links, contact/dark-mode. */
+@media (max-width: 640px) {
+  header.site-header {
+    padding: 0.85rem 1rem;
+    gap: 0.6rem;
+  }
+  header.site-header .name {
+    font-size: 0.85rem;
+  }
+  nav {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 0.5rem 0.6rem;
+  }
+  nav a {
+    font-size: 0.68rem;
+  }
 }
 
 main {
@@ -302,8 +330,11 @@ main {
   transform: translateX(-60px) rotate(4deg);
 }
 @container hero (max-width: 600px) {
+  /* The -60px shift only makes sense against the wider layout; on a narrow
+     container it just pushed the cat off-center, so drop that here rather
+     than hide the doodle entirely. */
   .hero-doodle {
-    display: none;
+    transform: rotate(4deg);
   }
 }
 .hero h1 {
@@ -597,6 +628,21 @@ svg.route {
     transition: none;
   }
 }
+@media (max-width: 640px) {
+  /* Slightly smaller so neighboring stops (positioned close together on a
+     narrow snake path) don't overlap each other. */
+  .stop,
+  .polaroid {
+    width: 140px;
+  }
+  .stop .place {
+    font-size: 0.68rem;
+  }
+  .stop .desc {
+    font-size: 0.8rem;
+    max-width: 26ch;
+  }
+}
 
 .quiet-note {
   font-size: 0.85rem;
@@ -684,9 +730,19 @@ svg.route {
 }
 .project-track-viewport {
   /* Nothing inside needs to escape vertically anymore — .project-details
-     lives outside this element now — so both axes can just clip cleanly. */
-  overflow: hidden;
+     lives outside this element now — so both axes can just clip cleanly.
+     overflow-x is `scroll`, not `hidden`: some mobile WebKit versions don't
+     honor a programmatic scrollLeft change on an overflow: hidden element,
+     which silently broke the ambient drift on those devices. The scrollbar
+     itself is hidden via the rules below instead. */
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   padding: 0.5rem 0;
+}
+.project-track-viewport::-webkit-scrollbar {
+  display: none;
 }
 .project-track {
   display: flex;
@@ -834,10 +890,19 @@ svg.route {
   margin-bottom: 1rem;
 }
 
+.bookshelf-wrap {
+  overflow: hidden;
+}
 .bookshelf {
   display: flex;
   align-items: flex-end;
   gap: 4px;
+  width: max-content;
+  /* Anchored at the top-left, matching where .bookshelf-wrap's own
+     (scaled-height) box starts — anchoring at the bottom instead pushed the
+     scaled content below the wrap's clipped bounds entirely, since the
+     unscaled layout box is taller than the wrap's reserved height. */
+  transform-origin: left top;
   padding-bottom: 0.5rem;
   border-bottom: 3px solid var(--brass);
 }
@@ -888,7 +953,7 @@ svg.route {
 }
 .book-marker {
   position: absolute;
-  top: -34px;
+  top: -46px;
   left: 0;
   display: flex;
   flex-direction: column;
@@ -900,12 +965,12 @@ svg.route {
 }
 .book-marker-label {
   font-family: "Courier New", ui-monospace, monospace;
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 .book-marker-glyph {
-  font-size: 1rem;
+  font-size: 1.3rem;
   margin-top: -2px;
 }
 
@@ -965,6 +1030,20 @@ svg.route {
   font-family: "Courier New", ui-monospace, monospace;
   color: var(--ink-soft);
 }
+@media (max-width: 640px) {
+  /* Small enough that all three (Flash/Sansa/Jewel) fit on one row instead
+     of wrapping the third onto its own line. */
+  .cat-jumble {
+    gap: 1.25rem 0.85rem;
+  }
+  .cat-portrait,
+  .cat-portrait-frame {
+    width: 92px;
+  }
+  .cat-portrait-frame {
+    height: 92px;
+  }
+}
 
 .disc-callout {
   display: flex;
@@ -995,6 +1074,18 @@ svg.route {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+@media (max-width: 640px) {
+  /* A plain wrapping flex row breaks unevenly here since each disc's size
+     varies (see SONGS' size formula in Favorites.js) — a fixed 3-column
+     grid guarantees all 12 read as an even 4 rows of 3, while each disc's
+     own marginTop still gives it a bit of scattered vertical stagger. */
+  .disc-jumble {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    gap: 1.25rem 0.5rem;
+  }
 }
 .disc {
   position: relative;
@@ -1119,7 +1210,10 @@ svg.route {
   max-width: 480px;
 }
 .frog-chart-eyebrow {
-  margin: 0 0 1rem;
+  /* The "beck" arrow above the chart pokes up above .frog-track by more than
+     this margin used to leave, so it overlapped this text — shifted up
+     slightly and given more clearance below instead. */
+  margin: -0.2rem 0 2.5rem;
 }
 .frog-track {
   display: flex;

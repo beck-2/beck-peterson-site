@@ -132,8 +132,14 @@ export default function TravelSnake() {
     function layout() {
       const W = wrap.getBoundingClientRect().width;
       const segH = 300;
-      const leftX = W * 0.18;
-      const rightX = W * 0.82;
+      // .stop is centered on its anchor via translateX(-50%), so an anchor
+      // closer to the edge than half its own width would push it past the
+      // edge — clamped here so a narrow mobile viewport can't push the
+      // polaroids into horizontal page overflow. Measured directly rather
+      // than hardcoded, since .stop's width itself varies by breakpoint.
+      const STOP_HALF_WIDTH = stops[0].getBoundingClientRect().width / 2;
+      const leftX = Math.max(STOP_HALF_WIDTH, W * 0.18);
+      const rightX = Math.min(W - STOP_HALF_WIDTH, W * 0.82);
       const topPad = 30;
 
       // Path anchors: one per stop, alternating left/right so the line

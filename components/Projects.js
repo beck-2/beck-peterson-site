@@ -248,15 +248,22 @@ function Carousel({ label, items, activeIndex, onActivate }) {
     let frame = requestAnimationFrame(step);
 
     function step(time) {
-      if (!reduce && !paused && lastTime !== null) {
+      // A backgrounded tab (phone locked, laptop on another tab for a while)
+      // stops getting rAF callbacks, so the next one can arrive with a huge
+      // elapsed delta — which would otherwise fling scrollLeft way out of
+      // range in one jump and read as the drift having silently died.
+      if (!reduce && !paused && lastTime !== null && time - lastTime < 250) {
         viewport.scrollLeft += DRIFT_SPEED * (time - lastTime);
       }
       // Wraps regardless of paused/reduced-motion, so a manual arrow nudge
-      // past either end always loops instead of hitting a dead stop.
+      // past either end always loops instead of hitting a dead stop. A loop
+      // rather than one-shot correction, so it also recovers cleanly from
+      // any out-of-range jump larger than a single half-width.
       const halfWidth = viewport.scrollWidth / 2;
-      if (viewport.scrollLeft >= halfWidth) {
+      while (viewport.scrollLeft >= halfWidth) {
         viewport.scrollLeft -= halfWidth;
-      } else if (viewport.scrollLeft < 0) {
+      }
+      while (viewport.scrollLeft < 0) {
         viewport.scrollLeft += halfWidth;
       }
       lastTime = time;

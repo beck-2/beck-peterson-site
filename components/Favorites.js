@@ -106,6 +106,47 @@ export default function Favorites() {
   const controllersRef = useRef([]);
   const interactedRef = useRef(new Set());
 
+  // The shelf's books are fixed-width spines that don't wrap or shrink (so
+  // their proportions stay intact), so on a narrow viewport the row is
+  // wider than the page — this scales the whole shelf down to fit instead,
+  // rather than letting it push the page into horizontal scroll.
+  const [shelfFit, setShelfFit] = useState({ scale: 1, height: null, topPad: 0 });
+  const bookshelfWrapRef = useRef(null);
+  const bookshelfRef = useRef(null);
+
+  useEffect(() => {
+    const wrap = bookshelfWrapRef.current;
+    const shelf = bookshelfRef.current;
+    if (!wrap || !shelf) return;
+
+    function measure() {
+      // The "currently reading" marker sits above its book via a negative
+      // top offset, which can poke above the shelf's own natural top edge
+      // (set by its tallest book) — not accounted for by scrollHeight, so
+      // it would otherwise get clipped by this wrap's overflow. Measured
+      // with the transform neutralized so the result is in real (untransformed)
+      // pixels regardless of whatever scale was last applied.
+      const prevTransform = shelf.style.transform;
+      shelf.style.transform = "none";
+      const marker = shelf.querySelector(".book-marker");
+      const overshoot = marker
+        ? Math.max(0, shelf.getBoundingClientRect().top - marker.getBoundingClientRect().top)
+        : 0;
+      shelf.style.transform = prevTransform;
+
+      const available = wrap.clientWidth;
+      const natural = shelf.scrollWidth;
+      const scale = natural > available ? available / natural : 1;
+
+      setShelfFit({ scale, height: (shelf.scrollHeight + overshoot) * scale, topPad: overshoot * scale });
+    }
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(wrap);
+    return () => observer.disconnect();
+  }, []);
+
   // Loads Spotify's iFrame Player API once and creates a hidden, controllable
   // embed per song. Our own disc button never touches audio directly — it
   // just calls controller.togglePlay(), and the spin animation is driven by
@@ -161,6 +202,11 @@ export default function Favorites() {
     if (playingIndex !== null && playingIndex !== i) {
       controllersRef.current[playingIndex]?.pause();
     }
+    // Spins the disc immediately rather than waiting for the embed's own
+    // playback_update round-trip, which can lag noticeably on a mobile
+    // network — the real event still arrives afterward and corrects this
+    // if actual playback doesn't match.
+    setPlayingIndex((prev) => (prev === i ? null : i));
     controller.togglePlay();
   }
 
@@ -212,27 +258,37 @@ export default function Favorites() {
             goodreads →
           </a>
         </div>
-        <div className="bookshelf">
-          {BOOKS.map((book, i) => (
-            <div className="book-spine-col" key={i}>
-              {book.leaning && (
-                <div className="book-marker">
-                  <span className="book-marker-label">currently reading</span>
-                  <span className="book-marker-glyph">↓</span>
+        <div
+          className="bookshelf-wrap"
+          ref={bookshelfWrapRef}
+          style={shelfFit.height ? { height: shelfFit.height, paddingTop: shelfFit.topPad } : undefined}
+        >
+          <div
+            className="bookshelf"
+            ref={bookshelfRef}
+            style={{ transform: `scale(${shelfFit.scale})` }}
+          >
+            {BOOKS.map((book, i) => (
+              <div className="book-spine-col" key={i}>
+                {book.leaning && (
+                  <div className="book-marker">
+                    <span className="book-marker-label">currently reading</span>
+                    <span className="book-marker-glyph">↓</span>
+                  </div>
+                )}
+                <div
+                  className="book-spine"
+                  style={{
+                    width: book.width,
+                    height: book.height,
+                    background: `color-mix(in srgb, ${book.color} 38%, var(--card))`,
+                  }}
+                >
+                  <span className="book-spine-label">{book.title}</span>
                 </div>
-              )}
-              <div
-                className="book-spine"
-                style={{
-                  width: book.width,
-                  height: book.height,
-                  background: `color-mix(in srgb, ${book.color} 38%, var(--card))`,
-                }}
-              >
-                <span className="book-spine-label">{book.title}</span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
 
