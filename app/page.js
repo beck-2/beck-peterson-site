@@ -12,6 +12,7 @@ import Spiral from "@/components/Spiral";
 
 const FUN_FACTS = [
   { label: "randomness", href: "https://www.random.org/analysis/" },
+  { label: "ski for cheaper", href: "https://outsidelifegw.com/reg/lbd" },
   { label: "parachutes don’t work", href: "https://www.bmj.com/content/363/bmj.k5094" },
   { label: "life", href: "https://playgameoflife.com/" },
   { label: "isochrone map", href: "http://emptypipes.org/2015/05/20/europe-isochrone-map/" },
