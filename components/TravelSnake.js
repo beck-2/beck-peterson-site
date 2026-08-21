@@ -53,6 +53,74 @@ const SOLO_STOPS = SOLO_LOCATIONS.map((loc, i) => ({
   image: loc.image,
 }));
 
+const VOLCANO_LOCATIONS = [
+  {
+    name: "Antigua, Guatemala",
+    cap: "Semana Santa",
+    image: "/images/travel/antigua.jpeg",
+    desc: "Happened upon purple-clad pilgrims celebrating a holy week with patterns of ash upon the streets, laid down to be trampled by men staggering under the weight of floats and monuments.",
+  },
+  {
+    name: "Volcan Acatenango",
+    cap: "kaboom!",
+    image: "/images/travel/acatenango.jpeg",
+    desc: "Hardest hike I've done in my life- the volcano just goes up. And up. And up. Thought I would collapse during the night hike of fuego, but it was worth it to see the well-trained volcano that manages to errupt each night.",
+  },
+  {
+    name: "Tikal",
+    cap: "lost",
+    image: "/images/travel/tikal.jpeg",
+    desc: "Felt like I was in temple runner, guided by the howler monkeys and a paper map that soon became drenched in a sudden downpour. I cannot imagine the might of that civilization.",
+  },
+  {
+    name: "Belize",
+    cap: "Spelunking",
+    image: "/images/travel/belize.jpeg",
+    desc: "Climbed waterfalls in a cave, ate bat shit and went crazy. Never again do I wish to see a cave spider, but the limestone formations almost made up for it. Still don't know the difference between stalactites and stalagmites.",
+  },
+];
+
+const VOLCANO_STOPS = VOLCANO_LOCATIONS.map((loc, i) => ({
+  cap: loc.cap,
+  place: `Stop ${ORDINALS[i]} · ${loc.name}`,
+  desc: loc.desc,
+  image: loc.image,
+}));
+
+const STUDY_LOCATIONS = [
+  {
+    name: "Girona",
+    cap: "Glass factory",
+    image: "/images/travel/girona.jpg",
+    desc: "I felt like sand to be molded into one of the many beautiful trinkets manufactured here; it was so hot in the brick ovens. I miss when it was ok to dedicate one's life to a craft, to be an artisan instead of a polymath.",
+  },
+  {
+    name: "Berlin",
+    cap: "mein Zuhause",
+    image: "/images/travel/berlin.jpg",
+    desc: "Studied abroad and did a surprising amount of studying! Learned an appalling amount of German and how to pour cement. Most importantly, I learned how to capture the essence of a place in a sketchbook and how to ignore cigarette smoke blown into my nostrils.",
+  },
+  {
+    name: "Amsterdam",
+    cap: "reunion",
+    image: "/images/travel/amsterdam.jpg",
+    desc: "Got a taste of Vale's life: the ice-cream-making, weed-smoking, everywhere-biking life that contrasts so sharply with her life in America. We became silly at a museum.",
+  },
+  {
+    name: "Prague",
+    cap: "another castle",
+    image: "/images/travel/prague.jpg",
+    desc: "A weekend away on a whim, I became the flaneuse of Czechia and observed the city as though I were a ghost.",
+  },
+];
+
+const STUDY_STOPS = STUDY_LOCATIONS.map((loc, i) => ({
+  cap: loc.cap,
+  place: `Stop ${ORDINALS[i]} · ${loc.name}`,
+  desc: loc.desc,
+  image: loc.image,
+}));
+
 const TRIPS = {
   solo: {
     label: "Solo",
@@ -65,15 +133,15 @@ const TRIPS = {
     label: "Volcano",
     year: 2026,
     blurb: "Decided to relax with the family for spring break but ended up climbing a volcano. Almost didn't make it out of the hike.",
-    ready: false,
-    stops: [],
+    ready: true,
+    stops: VOLCANO_STOPS,
   },
   study: {
     label: "Study",
     year: 2025,
     blurb: "Berlin study abroad, hedonism, discovery, and art. Little hops from my Mitte base to visit friends and castles alike.",
-    ready: false,
-    stops: [],
+    ready: true,
+    stops: STUDY_STOPS,
   },
   film: {
     label: "Film",
