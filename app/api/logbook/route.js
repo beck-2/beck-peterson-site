@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { dbConnect } from "@/lib/mongodb";
 import { verifyAdminSessionToken } from "@/lib/adminAuth";
+import { getClientIp } from "@/lib/getClientIp";
 import LogbookEntry from "@/models/LogbookEntry";
 
 const ADMIN_COOKIE = "logbook_admin";
@@ -15,10 +16,19 @@ const IP_MAX_NEW_ENTRIES = 8;
 const MIN_DRAWING_LENGTH = 400;
 const MAX_DRAWING_LENGTH = 400_000; // ~300KB decoded, comfortably under Mongo's 16MB doc cap
 
-function getClientIp(request) {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.ip || "unknown";
+// Control characters and Unicode formatting/bidi-override characters have no
+// legitimate reason to appear in a short public message — this is the kind
+// of thing used for invisible-character floods or visually spoofing text.
+const UNSAFE_CHARS =
+  /[\x00-\x08\x0b-\x1f\x7f\u200b-\u200f\u202a-\u202e\u2060-\u206f\ufeff]/g;
+
+// Catches an explicit protocol/www prefix, or a bare "word.tld"-looking
+// token. Not a full URL parser — this is a guestbook, not a security
+// boundary — just enough to block casual link-dropping.
+const LINK_PATTERN = /(https?:\/\/|www\.)\S+|\b[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.[a-z]{2,}(?:\/\S*)?\b/i;
+
+function sanitizeText(value) {
+  return value.normalize("NFC").replace(UNSAFE_CHARS, "");
 }
 
 function isValidPngDataUrl(value) {
@@ -66,13 +76,18 @@ export async function POST(request) {
     return Response.json({ error: "That didn't come through right — try again." }, { status: 400 });
   }
 
-  const name = typeof body?.name === "string" ? body.name.trim().slice(0, 40) : "";
-  const message = typeof body?.message === "string" ? body.message.trim().slice(0, 280) : "";
+  const name = sanitizeText(typeof body?.name === "string" ? body.name : "").trim().slice(0, 40);
+  const message = sanitizeText(typeof body?.message === "string" ? body.message : "")
+    .trim()
+    .slice(0, 280);
   const rawDrawing = typeof body?.drawingDataUrl === "string" ? body.drawingDataUrl : "";
   const hasDrawing = rawDrawing.length > 0;
 
   if (hasDrawing && !isValidPngDataUrl(rawDrawing)) {
     return Response.json({ error: "That drawing didn't come through right — try again." }, { status: 400 });
+  }
+  if (LINK_PATTERN.test(name) || LINK_PATTERN.test(message)) {
+    return Response.json({ error: "Links aren't allowed here — try describing it in words instead." }, { status: 400 });
   }
   if (!message && !hasDrawing) {
     return Response.json({ error: "Leave a message or a drawing first." }, { status: 400 });

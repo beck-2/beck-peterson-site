@@ -2,6 +2,7 @@
 // ABOUTME: Enforces a hidden 0-1000 range, one document per session (upserted, so resubmitting edits), and rate limits.
 import { cookies } from "next/headers";
 import { dbConnect } from "@/lib/mongodb";
+import { getClientIp } from "@/lib/getClientIp";
 import FrogSubmission from "@/models/FrogSubmission";
 
 const SESSION_COOKIE = "frog_sid";
@@ -36,12 +37,6 @@ function binIndexForValue(value) {
     if (value >= BIN_EDGES[i] && value < BIN_EDGES[i + 1]) return i;
   }
   return BIN_LABELS.length - 1;
-}
-
-function getClientIp(request) {
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) return forwarded.split(",")[0].trim();
-  return request.ip || "unknown";
 }
 
 async function buildChartPayload(ownSessionId) {
