@@ -3,6 +3,7 @@
 import "./globals.css";
 
 export const metadata = {
+  metadataBase: new URL("https://beckpeterson.me"),
   title: "Beck Peterson",
   description: "A little observer of a big universe.",
 };
