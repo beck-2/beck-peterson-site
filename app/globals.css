@@ -1651,3 +1651,26 @@ footer.site-footer {
   overflow: hidden;
   border: 3px solid var(--accent);
 }
+/* Oversized Boxing-face announcement across the top of the void. */
+.portal-message {
+  position: absolute;
+  top: 9vh;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0 5vw;
+  z-index: 1;
+  text-align: center;
+  text-transform: lowercase;
+  /* Fills the width, but the vh term keeps it from swallowing a short screen. */
+  font-size: clamp(2.75rem, min(11vw, 15vh), 8rem);
+  line-height: 1;
+  color: #f4ecd8;
+  text-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.95),
+    0 0 6px rgba(0, 0, 0, 0.7);
+  text-wrap: balance;
+  /* Sits above the background image but must not intercept clicks meant for
+     the spiral back-link in the top-right corner. */
+  pointer-events: none;
+}
