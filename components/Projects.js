@@ -445,8 +445,8 @@ function Carousel({ label, items, activeIndex, onActivate }) {
                         alt={item.title}
                         width={item.width}
                         height={item.height}
-                        sizes="220px"
-                        style={{ height: isActive ? "280px" : "160px", width: "auto" }}
+                        sizes={isActive ? "700px" : "220px"}
+                        style={{ height: isActive ? "360px" : "160px", width: "auto" }}
                       />
                     ) : (
                       <div className="project-frame-placeholder" />
