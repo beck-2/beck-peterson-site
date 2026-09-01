@@ -744,6 +744,29 @@ svg.route {
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 0.5rem 0;
+  /* Cards dissolve into the margins as they drift past either edge instead of
+     hitting a hard clip. The fade caps at 48px so it stays a thin vignette on
+     a wide column, but shrinks with the track on narrow screens. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 min(48px, 12%),
+    #000 calc(100% - min(48px, 12%)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 min(48px, 12%),
+    #000 calc(100% - min(48px, 12%)),
+    transparent 100%
+  );
+}
+/* While a card is expanded, drop the fade so the focused card reads crisp
+   edge to edge even when it's wider than the clear middle band. */
+.project-carousel:has(.project-card.active) .project-track-viewport {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 .project-track-viewport::-webkit-scrollbar {
   display: none;
@@ -794,7 +817,7 @@ svg.route {
    carries an inline style for its base size, which would otherwise override
    a CSS rule here. */
 .project-media {
-  height: 280px;
+  height: 360px;
 }
 /* The only playback control on a project video: a click anywhere else on the
    video closes the card, so play/pause lives on this button alone. */
