@@ -17,6 +17,9 @@ const FUN_FACTS = [
   { label: "life", href: "https://playgameoflife.com/" },
   { label: "isochrone map", href: "http://emptypipes.org/2015/05/20/europe-isochrone-map/" },
   { label: "qualia", href: "https://qri.org/oscilleditor/" },
+  { label: "free fruit", href: "https://fallingfruit.org/map/40.1125785,-88.2287926,4z" },
+  { label: "tools", href: "https://kk.org/cooltools/" },
+  { label: "solarpunk", href: "https://solar.lowtechmagazine.com/" },
 ];
 
 export default function Home() {
