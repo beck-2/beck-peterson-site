@@ -20,9 +20,6 @@ export default function Portal() {
       />
       <h1 className="portal-message stamp">puzzle hunt: return on the solstice</h1>
       <Spiral href="/" size={48} className="portal-spiral-back" ariaLabel="Leave the portal" />
-      <div className="portal-avatar-frame">
-        <Image src="/images/avatar.png" alt="Beck's avatar" fill sizes="220px" style={{ objectFit: "cover" }} />
-      </div>
     </div>
   );
 }
