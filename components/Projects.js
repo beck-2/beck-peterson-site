@@ -213,6 +213,56 @@ const CATEGORIES = [
   },
 ];
 
+// A project video with a single play/pause control and nothing else. The
+// video surface is left as a plain click target, so a click on it bubbles up
+// to the card and closes it — clicking the frame never toggles playback, only
+// this button does.
+function ProjectVideo({ src, poster, title }) {
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  return (
+    <>
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster || undefined}
+        playsInline
+        autoPlay
+        preload="auto"
+        className="project-media"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onEnded={() => setPlaying(false)}
+      />
+      <button
+        type="button"
+        className="project-video-toggle"
+        aria-label={`${playing ? "Pause" : "Play"} ${title}`}
+        onClick={(e) => {
+          // Keep the click off the card so it doesn't also close the video.
+          e.stopPropagation();
+          const video = videoRef.current;
+          if (!video) return;
+          if (video.paused) video.play();
+          else video.pause();
+        }}
+      >
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+          {playing ? (
+            <>
+              <rect x="1.5" y="1" width="3" height="10" />
+              <rect x="7.5" y="1" width="3" height="10" />
+            </>
+          ) : (
+            <path d="M2 1 L11 6 L2 11 Z" />
+          )}
+        </svg>
+      </button>
+    </>
+  );
+}
+
 function TypeDots({ type }) {
   return (
     <div className={"project-type-dots" + (type === "collab" ? " collab" : " solo")}>
@@ -245,15 +295,29 @@ function Carousel({ label, items, activeIndex, onActivate }) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let lastTime = null;
+    // Source-of-truth scroll offset, kept as a float. Safari rounds
+    // element.scrollLeft to an integer on every write, so the sub-pixel
+    // per-frame drift increment (~0.3px) gets truncated away every time and
+    // the track never actually moves. Accumulating the position here and
+    // only writing the (rounded) result keeps the drift alive on WebKit.
+    let position = viewport.scrollLeft;
     let frame = requestAnimationFrame(step);
 
     function step(time) {
+      // Something other than this loop can move the scroll: an arrow nudge,
+      // bringing a freshly-activated card into view, or a user swipe. Detect
+      // that by comparing against our own last write and adopt the new spot
+      // rather than fighting it. The threshold sits above the 1px rounding
+      // Safari applies to our writes so it doesn't trip on that alone.
+      if (Math.abs(viewport.scrollLeft - position) > 2) {
+        position = viewport.scrollLeft;
+      }
       // A backgrounded tab (phone locked, laptop on another tab for a while)
       // stops getting rAF callbacks, so the next one can arrive with a huge
-      // elapsed delta — which would otherwise fling scrollLeft way out of
+      // elapsed delta — which would otherwise fling the position way out of
       // range in one jump and read as the drift having silently died.
       if (!reduce && !paused && lastTime !== null && time - lastTime < 250) {
-        viewport.scrollLeft += DRIFT_SPEED * (time - lastTime);
+        position += DRIFT_SPEED * (time - lastTime);
       }
       // Wraps regardless of paused/reduced-motion, so a manual arrow nudge
       // past either end always loops instead of hitting a dead stop. A loop
@@ -262,17 +326,18 @@ function Carousel({ label, items, activeIndex, onActivate }) {
       // halfWidth > 0: if this node gets detached mid-flight (e.g. a route
       // change unmounts it right as a frame was already scheduled, just
       // before cancelAnimationFrame takes effect), scrollWidth reads 0 and
-      // `scrollLeft -= 0` would never change anything — an infinite loop
+      // `position -= 0` would never change anything — an infinite loop
       // that freezes the tab, not just a cosmetic glitch.
       const halfWidth = viewport.scrollWidth / 2;
       if (halfWidth > 0) {
-        while (viewport.scrollLeft >= halfWidth) {
-          viewport.scrollLeft -= halfWidth;
+        while (position >= halfWidth) {
+          position -= halfWidth;
         }
-        while (viewport.scrollLeft < 0) {
-          viewport.scrollLeft += halfWidth;
+        while (position < 0) {
+          position += halfWidth;
         }
       }
+      viewport.scrollLeft = position;
       lastTime = time;
       frame = requestAnimationFrame(step);
     }
@@ -369,12 +434,10 @@ function Carousel({ label, items, activeIndex, onActivate }) {
                 >
                   <div className="project-frame">
                     {isActive && item.video ? (
-                      <video
+                      <ProjectVideo
                         src={item.video}
-                        controls
-                        playsInline
-                        className="project-media"
-                        onClick={(e) => e.stopPropagation()}
+                        poster={item.image}
+                        title={item.title}
                       />
                     ) : item.image ? (
                       <Image
