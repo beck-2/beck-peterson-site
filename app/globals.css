@@ -796,6 +796,29 @@ svg.route {
 .project-media {
   height: 280px;
 }
+/* The only playback control on a project video: a click anywhere else on the
+   video closes the card, so play/pause lives on this button alone. */
+.project-video-toggle {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: inherit;
+}
+.project-video-toggle:hover,
+.project-video-toggle:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+}
 .project-frame-placeholder {
   width: 180px;
   height: 160px;

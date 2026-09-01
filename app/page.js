@@ -33,7 +33,10 @@ export default function Home() {
               src="/images/bluecat.png"
               alt="A little blue line-drawing of a cat"
               fill
-              sizes="150px"
+              sizes="360px"
+              // The source is an animated PNG; unoptimized keeps every frame
+              // intact (the optimizer would otherwise flatten it to a still).
+              unoptimized
               style={{ objectFit: "cover", objectPosition: "top" }}
               priority
             />
