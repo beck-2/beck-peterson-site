@@ -1,6 +1,7 @@
 // ABOUTME: Root layout for the site — wires up global styles and page metadata.
 // ABOUTME: Every route renders inside this shell.
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   metadataBase: new URL("https://beckpeterson.me"),
@@ -28,7 +29,10 @@ export default function RootLayout({ children }) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
